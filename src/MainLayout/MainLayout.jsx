@@ -1,0 +1,45 @@
+import React, { useEffect, useState } from 'react';
+import Navber from './Navber';
+import { Footer } from './Footer';
+import { Outlet, useNavigation } from 'react-router';
+
+import Marquee from "react-fast-marquee";
+import { RingLoader } from 'react-spinners';
+import { Bars } from 'react-loader-spinner';
+
+const MainLayout = () => {
+    const [laod, setLoad] = useState(true)
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        setLoad(false)
+    }, [])
+    if (laod) return <div className='min-h-screen flex justify-center items-center'>
+        <RingLoader style={{ color: 'red' }} />
+    </div>
+    return (
+        <div >
+            <Navber></Navber>
+            <Marquee className='pt-1 bg-red-100 text-[var(--primary-color)]'>
+                "রক্ত দিন, জীবন বাঁচান — আপনার এক ফোঁটা রক্ত কারো পুরো পৃথিবী হতে পারে। আজই নিবন্ধন করুন রক্তদাতা হিসেবে!"
+            </Marquee>
+
+            <div className='min-h-[calc(100vh-430px)] bg-gray-100'>
+                {
+                    navigation.state == 'loading' ? <Bars
+                        height="50"
+                        width="50"
+                        color="#ffffff" // white color
+                        ariaLabel="bars-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    /> : <Outlet></Outlet>
+                }
+            </div>
+            <Footer></Footer>
+        </div>
+    );
+};
+
+export default MainLayout;

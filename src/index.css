@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+:root {
+    --primary-color: #dc2626;
+}
+
+.MuiTypography-root,
+.MuiButton-root,
+.MuiTableCell-root,
+.MuiTableHead-root,
+.MuiTableBody-root,
+.MuiSelect-root,
+.MuiMenuItem-root {
+    font-family: inherit !important;
+}

@@ -1,0 +1,93 @@
+import Lottie from 'lottie-react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router';
+import circle from '../../assets/circle.json'
+import AuthHook from '../../Component/Share/Hooks/AuthHook';
+import toast from 'react-hot-toast';
+const Login = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const [error, setError] = useState("")
+    const navigate = useNavigate()
+    const [show, setShow] = useState(false)
+    const { handleLogin ,setLoading,loading} = AuthHook()
+
+    const onLogin = (data) => {
+        setError("")
+        handleLogin(data?.email, data?.password)
+            .then(() => {
+                navigate('/')
+                toast.success('Login Successfuylly')
+            })
+            .catch((err) => {
+                setLoading(false)
+                setError(err?.message)
+            })
+
+    };
+    {
+        error && toast.error(error)
+    }
+    return (
+        <div className="flex shadow-xl shadow-orange-50 items-center py-10 md:flex-row flex-col  justify-around   px-4">
+
+            <div className=' w-[50%]   sm:w-[30%]   '>
+                <Lottie animationData={circle}>
+
+                </Lottie>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+                <h2 className="text-3xl font-bold text-center text-red-600 mb-6">Login</h2>
+                <form onSubmit={handleSubmit(onLogin)} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-black mb-1">Email</label>
+                        <input
+                            type="email"
+                            {...register('email', { required: 'Email is required' })}
+                            placeholder="Enter your email"
+                            className="w-full px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        />
+                        {errors.email && (
+                            <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+                        )}
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-black mb-1">Password</label>
+                        <input
+                            type={show ? 'text' : 'password'}
+                            {...register('password', { required: 'Password is required' })}
+                            placeholder="Enter your password"
+                            className="w-full px-4 py-2 border border-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        />
+                        {errors.password && (
+                            <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+                        )}
+                    </div>
+                    <div>
+                        <input onChange={() => setShow(!show)} type="checkbox" name="" id="" /> <span>show password</span>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-[var(--primary-color)] hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition duration-300"
+                    >
+                        Sign In
+                    </button>
+                </form>
+                <p className="mt-4 text-center text-sm">
+                    Don't have an account?{' '}
+                    <Link to="/signup" className="text-[var(--primary-color)] hover:underline">
+                        Sign Up
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default Login;
