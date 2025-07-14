@@ -193,7 +193,7 @@ const SearchDoner = () => {
                     </div>
                 ) : search ? (
                     doners.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-[90%] mx-auto py-10">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 w-[98%] mx-auto py-10">
                             {doners.map((donor) => <SearchDonerDisplay key={donor?._id} donor={donor}></SearchDonerDisplay> )}
                         </div>
                     ) : (

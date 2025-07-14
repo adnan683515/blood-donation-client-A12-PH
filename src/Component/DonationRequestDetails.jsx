@@ -3,13 +3,24 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import AxiosSecure from '../Axios/AxiosSequere';
 import RequestConfirmModal from './RequestConfirmModal';
+import RoleHook from './Share/Hooks/RoleHook';
+import { Bars } from 'react-loader-spinner';
+import toast from 'react-hot-toast';
 
 const DonationRequestDetails = () => {
     const { id } = useParams();
     const axiosSecure = AxiosSecure();
     let [isOpen, setIsOpen] = useState(false)
+    const [role, roleLoading] = RoleHook()
+
+
 
     function open() {
+
+        if (role !== 'Donor') {
+            toast.error("Only Donors are allowed to perform this action.");
+            return
+        }
         setIsOpen(true)
     }
 
@@ -17,7 +28,7 @@ const DonationRequestDetails = () => {
         setIsOpen(false)
     }
 
-    const { data: details = {}, isLoading ,refetch } = useQuery({
+    const { data: details = {}, isLoading, refetch } = useQuery({
         queryKey: ['details', id],
         enabled: !!id,
         queryFn: async () => {
@@ -26,8 +37,16 @@ const DonationRequestDetails = () => {
         },
     });
 
-    if (isLoading) {
-        return <div className="text-center py-10 text-lg font-semibold">Loading...</div>;
+    if (isLoading || roleLoading) {
+        return <div className="text-center py-10 text-lg font-semibold"><Bars
+            height="50"
+            width="50"
+            color="#ff0000 " // white color
+            ariaLabel="bars-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+        /></div>;
     }
 
     return (
@@ -68,6 +87,7 @@ const DonationRequestDetails = () => {
             {/* Donate Button */}
             <div className="mt-6 mb-9">
                 <button
+
                     onClick={open}
                     className="w-full py-3 bg-gradient-to-r from-black to-red-600 text-white text-lg font-semibold rounded-xl shadow-md hover:opacity-90 transition"
 
@@ -75,7 +95,7 @@ const DonationRequestDetails = () => {
                     Donate Now
                 </button>
             </div>
-            <RequestConfirmModal refetch={refetch} id={id} close={close}  isOpen={isOpen} setIsOpen={setIsOpen}>
+            <RequestConfirmModal refetch={refetch} id={id} close={close} isOpen={isOpen} setIsOpen={setIsOpen}>
 
             </RequestConfirmModal>
         </div>

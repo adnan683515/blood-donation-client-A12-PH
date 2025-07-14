@@ -5,14 +5,18 @@ import AuthHook from '../Share/Hooks/AuthHook';
 import axios from 'axios';
 import AxiosSecure from './../../Axios/AxiosSequere';
 import toast from 'react-hot-toast';
+import RoleHook from '../Share/Hooks/RoleHook';
+import { Bars } from 'react-loader-spinner';
 
 const DonerForm = () => {
 
-    const { user } = AuthHook()
+    const { user, loading } = AuthHook()
     const [allDisticts, setAllDisticts] = useState([])
     const [finalZila, setFinalZila] = useState(null)
     const [upliza, setUpzilaData] = useState([])
     const axiosSequere = AxiosSecure()
+    const { 1: roleLoading, 2: status } = RoleHook()
+
     const {
         register,
         handleSubmit,
@@ -22,11 +26,12 @@ const DonerForm = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
+
+
+
+
         const { recipientName, address, requesterName, requesterEmail, upazila, hospital, bloodGroup, date, time, ampm, message } = data
-
-
         const timeFix = time + ' ' + ampm
-
 
         const requestInformations = { address, recipientName, requesterName, requesterEmail, finalZila, upazila, hospital, bloodGroup, date, timeFix, message, status: 'pending', createdAt: new Date() }
 
@@ -77,9 +82,23 @@ const DonerForm = () => {
 
     }, [selectedZila])
 
+
+
+
+    if (roleLoading || loading) {
+        return (
+            <div className='min-h-screen flex justify-center items-center'>
+                <Bars height="50" width="50" color="#ff0000" ariaLabel="bars-loading" visible={true} />
+            </div>
+        );
+    }
+
     return (
-        <div className="max-w-4xl mx-auto bg-white p-6 rounded-md shadow-md mt-10">
+        <div className="max-w-4xl relative mx-auto bg-white p-6 rounded-md shadow-md mt-10">
             <h2 className="text-2xl font-bold text-red-600 mb-6 text-center">Blood Donation Request Form</h2>
+            <h1 className={` absolute top-6 right-2 text-white
+            ${status !== 'Active' ? 'bg-red-600 px-3  py-1 rounded-sm' : 'bg-green-500 px-3 py-1 rounded-sm'}
+                `}>Status:  {status} </h1>
             <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 {/* Requester Name (Read Only) */}
@@ -243,7 +262,11 @@ const DonerForm = () => {
                 <div className="md:col-span-2 text-center">
                     <button
                         type="submit"
-                        className="bg-red-600 w-full text-white px-6 py-2 rounded hover:bg-red-700 transition"
+                        disabled={status !== 'Active'}
+                        className={`
+    w-full px-6 py-2 rounded text-white transition
+    ${status !== 'Active' ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'}
+    `}
                     >
                         Submit Request
                     </button>

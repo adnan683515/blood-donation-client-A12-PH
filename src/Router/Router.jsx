@@ -14,6 +14,15 @@ import AllDonationRequest from "../Component/AllDonationRequest";
 import DonationRequestDetails from "../Component/DonationRequestDetails";
 import MyDonationRequest from "../Component/Doner/MyDonationRequest";
 import AllUserpage from "../Component/Admin/AllUserpage";
+import AllRequestPageAdmin from "../Component/Admin/AllRequestPageAdmin";
+import ContentManagMent from "../Component/Admin/ContentManagMent";
+import Error from "../Component/NotFound";
+import AdminPrivetRouter from "./AdminPrivetRouter";
+import ErrorPage from "../Component/NotFound";
+import NotFound from "../Component/NotFound";
+import DonorPrivetRouter from "./DonorPrivetRouter";
+import AdminAndVolunTeer from "./AdminAndVolunTeer";
+import Blog from "../Component/Blog";
 
 
 export const router = createBrowserRouter([
@@ -44,6 +53,12 @@ export const router = createBrowserRouter([
                 element: <PrivetRouter>
                     <DonationRequestDetails></DonationRequestDetails>
                 </PrivetRouter>
+            }, {
+                path: "/errorpage",
+                Component: NotFound
+            },{
+                path:'/Blogpage',
+                Component : Blog
             }
         ]
     },
@@ -59,16 +74,28 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/deshboard/createdonationrequest',
-                Component: DonerForm
+                element: <DonorPrivetRouter>
+                    <DonerForm></DonerForm>
+                </DonorPrivetRouter>
             }, {
                 path: '/deshboard/profile',
                 Component: MyProfile
             }, {
                 path: '/deshboard/my-donation-requests',
                 Component: MyDonationRequest
-            },{
-                path:'/deshboard/all-users',
-                Component : AllUserpage
+            }, {
+                path: '/deshboard/all-users',
+                element: <AdminPrivetRouter>
+                    <AllUserpage></AllUserpage>
+                </AdminPrivetRouter>
+            }, {
+                path: '/deshboard/allRequestList',
+                element: <AdminAndVolunTeer>
+                    <AllRequestPageAdmin></AllRequestPageAdmin>
+                </AdminAndVolunTeer>
+            }, {
+                path: '/deshboard/content-management',
+                Component: ContentManagMent
             }
         ]
     }

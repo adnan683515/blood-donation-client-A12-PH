@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AuthHook from '../Share/Hooks/AuthHook';
 import DeshBoardTabulaerView from './DeshBoardTabulaerView';
 import { useQuery } from '@tanstack/react-query';
@@ -6,32 +6,31 @@ import AxiosSecure from '../../Axios/AxiosSequere';
 import { Bars } from 'react-loader-spinner';
 import RoleHook from '../Share/Hooks/RoleHook';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const Welcome = () => {
-    const { user, loading } = AuthHook(); // get user from auth hook
-    const axiosSecure = AxiosSecure(); // secure axios instance
-    const [role, roleLoading] = RoleHook(); // get role from role hook
+    const { user, loading } = AuthHook();
+    const axiosSecure = AxiosSecure();
+    const [role, roleLoading] = RoleHook();
+
     const [countDonors, setCountDonors] = useState(null);
     const [countVolunteer, setCountVolunteer] = useState(null);
     const [totalUser, setTotalUser] = useState(null);
     const [request, setRequest] = useState(null);
 
-    // Get Donation Request for Donors
     const { data: donationData = [], refetch } = useQuery({
         queryKey: ['donationRequest', user?.email],
         enabled: !loading && !roleLoading && role !== 'Admin',
         queryFn: async () => {
             const result = await axiosSecure.get(`/loadDontaionRequest?email=${user?.email}`);
             const data = result.data;
-            // Ensure it's always an array
             return Array.isArray(data) ? data : [data];
         },
     });
 
-    // Get all donors for Admin
     const { data: donors = [] } = useQuery({
         queryKey: ['donor', user?.email],
-        enabled: !loading && !roleLoading && role === 'Admin',
+        enabled: !loading && !roleLoading && (role === 'Admin' || role === 'Volunteer'),
         queryFn: async () => {
             const result = await axiosSecure.get(`/allDonors?email=${user?.email}`);
             setCountDonors(result?.data?.donors);
@@ -45,19 +44,42 @@ const Welcome = () => {
     const isInitialLoading = loading || roleLoading || !role;
     if (isInitialLoading) {
         return (
-            <div className='min-h-screen flex justify-center items-center'>
-                <Bars height="50" width="50" color="#ff0000" ariaLabel="bars-loading" visible={true} />
+            <div className="min-h-screen flex justify-center items-center">
+                <Bars height="50" width="50" color="#e11d48" ariaLabel="bars-loading" visible={true} />
             </div>
         );
     }
 
     const handleStatus = async (e, id) => {
+        const action = e.innerText;
+        if (action === 'Edit' || action === 'Delete') {
+            if (action === 'Delete') {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This donation request will be permanently deleted.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const result = await axiosSecure.delete(`/deleteRequest/${id}`);
+                        if (result?.data?.deletedCount) {
+                            Swal.fire('Deleted!', 'Request has been deleted.', 'success');
+                            refetch();
+                        }
+                    }
+                });
+            }
+            return;
+        }
         try {
-            const result = await axiosSecure.patch(`/donationRequestUpdate/${id}/${e.innerText}`);
+            const result = await axiosSecure.patch(`/donationRequestUpdate/${id}/${action}`);
             if (result?.data?.modifiedCount) {
-                e.innerText === 'Done'
-                    ? toast.success("Donation Request Successfully Done")
-                    : toast.error("Donation Request Cancel!");
+                action === 'Done'
+                    ? toast.success('Donation Request Done!')
+                    : toast.error('Donation Request Cancelled!');
                 refetch();
             }
         } catch (err) {
@@ -66,84 +88,45 @@ const Welcome = () => {
     };
 
     return (
-        <div>
-            {/* Welcome Header */}
-            <div className="bg-gradient-to-r from-black to-red-700 p-8 rounded-xl shadow-lg text-white">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                    Welcome, {user?.displayName || 'Valued User'} ({role}) 🎉
+        <div className="px-4 md:px-8 py-12 max-w-7xl mx-auto">
+            {/* Welcome Banner */}
+            <div className="bg-gradient-to-r from-red-700 to-gray-950 rounded-3xl text-white shadow-2xl p-10 text-center backdrop-blur-lg">
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
+                    Welcome, {user?.displayName || 'Hero'} ({role})
                 </h1>
-                <p className="text-lg md:text-xl">
-                    Thank you for stepping up to save lives through blood donation. ❤️
-                </p>
+                <p className="text-lg md:text-xl">Your contribution saves lives. Thank you! 🩸❤️</p>
             </div>
 
-            {/* Donation Requests for Donors */}
-            {role !== 'Admin' && Array.isArray(donationData) && donationData.length > 0 && (
-                <div className='relative overflow-hidden mt-10'>
-                    <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
+            {/* Stats for Admin/Volunteer */}
+            {(role === 'Admin' || role === 'Volunteer') && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                    {/* Card */}
+                    <StatCard label="Total Donors" value={countDonors} color="rose" icon="❤️" />
+                    <StatCard label="Total Users" value={totalUser} color="sky" icon="👥" />
+                    <StatCard label="Volunteers" value={countVolunteer} color="green" icon="🤝" />
+                    <StatCard label="Requests" value={request} color="purple" icon="📋" />
                 </div>
             )}
 
-            {/* Admin Dashboard Stats */}
-            {role === 'Admin' && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-                    {/* Donors Card */}
-                    <div className="bg-white text-black rounded-2xl shadow-xl p-6 flex items-center gap-4 hover:scale-[1.02] transition duration-300 ease-in-out">
-                        <div className="bg-red-100 p-3 rounded-full">
-                            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 22s8-4.5 8-10a8 8 0 10-16 0c0 5.5 8 10 8 10z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold mb-1">Total Donors</h2>
-                            <p className="text-3xl font-semibold text-red-600">{countDonors ?? 0}</p>
-                        </div>
-                    </div>
-
-                    {/* Total Users Card */} 
-                    <div className="bg-white text-black rounded-2xl shadow-xl p-6 flex items-center gap-4 hover:scale-[1.02] transition duration-300 ease-in-out">
-                        <div className="bg-blue-100 p-3 rounded-full">
-                            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M7 20H2v-2a4 4 0 014-4h1m4-4a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold mb-1">Total Users</h2>
-                            <p className="text-3xl font-semibold text-blue-600">{totalUser || 0}</p>
-                        </div>
-                    </div>
-
-                    {/* Volunteers Card */}
-                    <div className="bg-white text-black rounded-2xl shadow-xl p-6 flex items-center gap-4 hover:scale-[1.02] transition duration-300 ease-in-out">
-                        <div className="bg-green-100 p-3 rounded-full">
-                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422A12.083 12.083 0 0112 21.5a12.083 12.083 0 01-6.16-10.922L12 14z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold mb-1">Total Volunteers</h2>
-                            <p className="text-3xl font-semibold text-green-600">{countVolunteer ?? 0}</p>
-                        </div>
-                    </div>
-
-                    {/* Donation Requests Card */}
-                    <div className="bg-white text-black rounded-2xl shadow-xl p-6 flex items-center gap-4 hover:scale-[1.02] transition duration-300 ease-in-out">
-                        <div className="bg-purple-100 p-3 rounded-full">
-                            <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422A12.083 12.083 0 0112 21.5a12.083 12.083 0 01-6.16-10.922L12 14z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold mb-1">Total Requests</h2>
-                            <p className="text-3xl font-semibold text-purple-600">{request ?? 0}</p>
-                        </div>
-                    </div>
+            {/* Table for Donors */}
+            {role !== 'Admin' && donationData.length > 0 && (
+                <div className="mt-12 rounded-3xl shadow-lg overflow-hidden bg-white">
+                    <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
                 </div>
             )}
         </div>
     );
 };
+
+// Clean Stat Card
+const StatCard = ({ label, value, color, icon }) => (
+    <div className="bg-white rounded-3xl shadow-xl p-6 text-center hover:scale-[1.03] transition-all">
+        <div className={`w-14 h-14 flex items-center justify-center mx-auto mb-4 rounded-full bg-${color}-100 text-3xl`}>
+            {icon}
+        </div>
+        <h3 className="text-xl font-semibold mb-1">{label}</h3>
+        <p className={`text-4xl font-extrabold text-${color}-600`}>{value ?? 0}</p>
+    </div>
+);
 
 export default Welcome;

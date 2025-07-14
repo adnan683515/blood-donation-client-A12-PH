@@ -6,9 +6,11 @@ import {
     TableRow, Typography
 } from '@mui/material';
 import { Bars } from 'react-loader-spinner';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router'; 
+
 import AuthHook from '../Share/Hooks/AuthHook';
 import AxiosSequere from '../../Axios/AxiosSequere';
-import Swal from 'sweetalert2';
 
 const AllUserpage = () => {
     const { user, loading } = AuthHook();
@@ -18,79 +20,73 @@ const AllUserpage = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const { data: allusers = [], isLoading, refetch } = useQuery({
+    const { data: allUsers = [], isLoading, refetch } = useQuery({
         queryKey: ['allusers', user?.email],
-        enabled: user?.email && !loading,
+        enabled: !!user?.email && !loading,
         queryFn: async () => {
-            const result = await axiosSequere.get(`/AllUsersData?email=${user?.email}`);
-            return result?.data || [];
+            const res = await axiosSequere.get(`/AllUsersData?email=${user?.email}`);
+            return res?.data || [];
         }
     });
 
-    const handleChangePage = (event, newPage) => setPage(newPage);
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const handleStatusToggle = async (email, newStatus) => {
-        await axiosSequere.patch(`/update-user-status/${email}`, { status: newStatus });
-        refetch();
-    };
-
-    const handleMakeVolunteer = async (userId, email) => {
+    const handleStatusToggle = async (id, newStatus) => {
         Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to make this user a Volunteer?",
-            icon: "question",
+            title: `Are you sure?`,
+            text: `You want to ${newStatus === 'Blocked' ? 'block' : 'activate'} this user?`,
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#10b981", // green
-            cancelButtonColor: "#ef4444",  // red
-            confirmButtonText: "Yes, make Volunteer!",
-            cancelButtonText: "Cancel"
+            confirmButtonColor: newStatus === 'Blocked' ? '#ef4444' : '#10b981',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: `Yes, ${newStatus}`,
         }).then(async (result) => {
             if (result.isConfirmed) {
+                await axiosSequere.patch(`/userRoleupdate/${id}/${newStatus}`);
 
 
-                const result = await axiosSequere.patch(`/userRoleupdate/${userId}/Volunteer`)
-                console.log(result)
-
-                if (result?.data?.modifiedCount) {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "The user has been promoted to Volunteer.",
-                        icon: "success",
-                        confirmButtonColor: "#10b981"
-                    });
-                    refetch()
-                }
-
+                refetch();
+                Swal.fire('Success!', `User status updated to ${newStatus}`, 'success');
             }
         });
-
-        refetch();
     };
 
-    const handleMakeDonor = async (email) => {
-        await axiosSequere.patch(`/make-donor/${email}`);
-        refetch();
+    const handleRoleChange = async (endpoint, userIdOrEmail, roleName) => {
+        const isId = endpoint.includes("userRoleupdate");
+        Swal.fire({
+            title: `Make ${roleName}?`,
+            text: `Do you want to promote this user to ${roleName}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: "#10b981",
+            cancelButtonColor: "#ef4444",
+            confirmButtonText: `Yes, make ${roleName}`,
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosSequere.patch(`/${endpoint}/${userIdOrEmail}/${roleName}`);
+
+
+
+                if (res?.data?.modifiedCount || res?.data?.acknowledged) {
+                    Swal.fire({
+                        title: "Success!",
+                        text: `User promoted to ${roleName}`,
+                        icon: "success",
+                        confirmButtonColor: "#10b981",
+                    });
+                    refetch();
+                }
+            }
+        });
     };
 
-    const handleMakeAdmin = async (email) => {
-        await axiosSequere.patch(`/make-admin/${email}`);
-        refetch();
-    };
-
-    const filteredUsers = allusers.filter(user => {
-        if (statusFilter === 'all') return true;
-        return user.status?.toLowerCase() === statusFilter;
-    });
+    const filteredUsers = allUsers.filter(u =>
+        statusFilter === 'all' ? true : u.status?.toLowerCase() === statusFilter
+    );
 
     const paginatedUsers = filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     if (isLoading || loading) {
         return (
-            <div className='min-h-screen flex justify-center items-center'>
+            <div className="min-h-screen flex justify-center items-center">
                 <Bars height="50" width="50" color="#ff0000" ariaLabel="bars-loading" visible={true} />
             </div>
         );
@@ -102,8 +98,11 @@ const AllUserpage = () => {
                 All Users
             </Typography>
 
+            {/* Filter Dropdown */}
             <Box sx={{ mb: 2 }}>
-                <Typography fontWeight="medium" sx={{ mb: 1 }}>Filter by Status:</Typography>
+                <Typography fontWeight="medium" sx={{ mb: 1 }}>
+                    Filter by Status:
+                </Typography>
                 <Select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
@@ -116,6 +115,7 @@ const AllUserpage = () => {
                 </Select>
             </Box>
 
+            {/* User Table */}
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -129,62 +129,55 @@ const AllUserpage = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {paginatedUsers.map((user, index) => (
-                            <TableRow key={index}>
-                                <TableCell>
-                                    <Avatar alt={user.name} src={user.image} />
-                                </TableCell>
-                                <TableCell>{user.name}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.role}</TableCell>
-                                <TableCell>
-                                    <span
-                                        className={`px-2 py-1 rounded text-white text-sm font-medium ${user.status === 'Active'
-                                            ? 'bg-green-600'
-                                            : 'bg-red-600'
-                                            }`}
-                                    >
-                                        {user.status}
-                                    </span>
-                                </TableCell>
-                                <TableCell>
-                                    <Box className="flex justify-center items-center  gap-2 flex-col sm:flex-row">
-                                        <Box className='pt-2'>
-                                            {user.status === 'Active' && (
-                                                <Button
-                                                    size="small"
-                                                    variant="contained"
-                                                    color="error"
-                                                    onClick={() => handleStatusToggle(user.email, 'Blocked')}
-                                                >
-                                                    Block
-                                                </Button>
-                                            )}
-                                            {user.status === 'Blocked' && (
-                                                <Button
-                                                    size="small"
-                                                    variant="contained"
-                                                    color="success"
-                                                    onClick={() => handleStatusToggle(user.email, 'Active')}
-                                                >
-                                                    Active
-                                                </Button>
-                                            )}
+                        {paginatedUsers.length > 0 ? (
+                            paginatedUsers.map((user, index) => (
+                                <TableRow key={index}>
+                                    <TableCell><Avatar alt={user.name} src={user.image} /></TableCell>
+                                    <TableCell>{user.name}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.role}</TableCell>
+                                    <TableCell>
+                                        <span className={`px-2 py-1 rounded text-white text-sm font-medium ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'
+                                            }`}>
+                                            {user.status}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Box className="flex flex-col sm:flex-row justify-center items-center gap-2 flex-wrap">
 
-                                        </Box>
-                                        {/* Role Switch Buttons */}
-                                        <Box className="flex gap-2 justify-center items-center flex-wrap mt-2">
+                                            {/* Status Button */}
+                                            <Button
+                                                size="small"
+                                                variant="contained"
+                                                sx={{
+                                                    width: 130,
+                                                    textTransform: 'none',
+                                                    fontWeight: 500,
+                                                    backgroundColor: user.status === 'Active' ? '#dc2626' : '#16a34a',
+                                                    color: 'white',
+                                                    '&:hover': {
+                                                        backgroundColor: user.status === 'Active' ? '#b91c1c' : '#15803d'
+                                                    }
+                                                }}
+                                                onClick={() => handleStatusToggle(user._id, user.status === 'Active' ? 'Blocked' : 'Active')}
+                                            >
+                                                {user.status === 'Active' ? 'Block' : 'Activate'}
+                                            </Button>
+
+                                            {/* Role Buttons */}
                                             {user.role !== 'Volunteer' && (
                                                 <Button
                                                     size="small"
                                                     variant="contained"
-                                                    color="white"
-                                                    onClick={() => handleMakeVolunteer(user?._id, user.email)}
                                                     sx={{
+                                                        width: 130,
                                                         textTransform: 'none',
-                                                        borderRadius: '3px',
                                                         fontWeight: 500,
+                                                        backgroundColor: '#334155',
+                                                        color: '#fff',
+                                                        '&:hover': { backgroundColor: '#1e293b' }
                                                     }}
+                                                    onClick={() => handleRoleChange('userRoleupdate', user._id, 'Volunteer')}
                                                 >
                                                     Make Volunteer
                                                 </Button>
@@ -193,13 +186,17 @@ const AllUserpage = () => {
                                                 <Button
                                                     size="small"
                                                     variant="contained"
-                                                    color="secondary"
-                                                    onClick={() => handleMakeDonor(user.email)}
                                                     sx={{
+                                                        width: 130,
                                                         textTransform: 'none',
-                                                        borderRadius: '8px',
                                                         fontWeight: 500,
+                                                        background: 'linear-gradient(to right, black, red)',
+                                                        color: 'white',
+                                                        '&:hover': {
+                                                            background: 'linear-gradient(to right, #111, #cc0000)',
+                                                        },
                                                     }}
+                                                    onClick={() => handleRoleChange('userRoleupdate',  user._id, 'Donor')}
                                                 >
                                                     Make Donor
                                                 </Button>
@@ -209,26 +206,23 @@ const AllUserpage = () => {
                                                     size="small"
                                                     variant="contained"
                                                     sx={{
+                                                        width: 130,
+                                                        textTransform: 'none',
+                                                        fontWeight: 500,
                                                         backgroundColor: '#222',
                                                         color: '#fff',
-                                                        textTransform: 'none',
-                                                        borderRadius: '8px',
-                                                        fontWeight: 500,
-                                                        '&:hover': {
-                                                            backgroundColor: '#000',
-                                                        }
+                                                        '&:hover': { backgroundColor: '#000' }
                                                     }}
-                                                    onClick={() => handleMakeAdmin(user.email)}
+                                                    onClick={() => handleRoleChange('userRoleupdate',  user._id, 'Admin')}
                                                 >
                                                     Make Admin
                                                 </Button>
                                             )}
                                         </Box>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        {paginatedUsers.length === 0 && (
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
                             <TableRow>
                                 <TableCell colSpan={6} align="center">
                                     No users found.
@@ -237,14 +231,19 @@ const AllUserpage = () => {
                         )}
                     </TableBody>
                 </Table>
+
+                {/* Pagination */}
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 15]}
                     component="div"
                     count={filteredUsers.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    onPageChange={(e, newPage) => setPage(newPage)}
+                    onRowsPerPageChange={(e) => {
+                        setRowsPerPage(parseInt(e.target.value, 10));
+                        setPage(0);
+                    }}
                 />
             </TableContainer>
         </Box>

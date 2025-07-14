@@ -20,8 +20,8 @@ import {
 import AxiosSecure from './../../Axios/AxiosSequere';
 import { useQuery } from '@tanstack/react-query';
 
-// Row Component
-function Row({ row, handleStatus }) {
+
+function Row({ row, handleStatus, role }) {
     const [open, setOpen] = React.useState(false);
     const axiosSecure = AxiosSecure();
 
@@ -31,8 +31,9 @@ function Row({ row, handleStatus }) {
             const result = await axiosSecure.get(`/confirmedReq/${row?._id}`);
             return result?.data;
         },
-        enabled: !!row?._id, // Avoid calling API without _id
+        enabled: !!row?._id,
     });
+
 
     return (
         <>
@@ -70,8 +71,10 @@ function Row({ row, handleStatus }) {
                 </TableCell>
                 <TableCell>
                     <div className="flex gap-2 justify-center">
-                        <button className="px-3 py-1 bg-gray-100 text-black rounded-md font-semibold">Edit</button>
-                        <button className="px-3 py-1 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Delete</button>
+                        {
+                            role === 'Admin' || <button onClick={(e) => handleStatus(e.target, row?._id)} className="px-3 py-1 bg-gray-100 text-black rounded-md font-semibold">Edit</button>
+                        }
+                        <button onClick={(e) => handleStatus(e.target, row?._id)} className="px-3 py-1 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Delete</button>
                     </div>
                 </TableCell>
             </TableRow>
@@ -171,12 +174,15 @@ Row.propTypes = {
         _id: PropTypes.string.isRequired,
     }).isRequired,
     handleStatus: PropTypes.func,
+    role: PropTypes.string
 };
 
 // Main Component
-export default function DeshBoardTabulaerView({ DonationRequest = [], handleStatus }) {
+export default function DeshBoardTabulaerView({ DonationRequest = [], handleStatus, role }) {
     // Ensure DonationRequest is always an array
     const safeRows = Array.isArray(DonationRequest) ? DonationRequest : [];
+
+
 
     return (
         <TableContainer className="relative overflow-hidden" component={Paper}>
@@ -199,7 +205,7 @@ export default function DeshBoardTabulaerView({ DonationRequest = [], handleStat
                 <TableBody>
                     {safeRows.length > 0 ? (
                         safeRows.map((row, index) => (
-                            <Row handleStatus={handleStatus} key={row._id || index} row={row} />
+                            <Row handleStatus={handleStatus} role={role} key={row._id || index} row={row} />
                         ))
                     ) : (
                         <TableRow>

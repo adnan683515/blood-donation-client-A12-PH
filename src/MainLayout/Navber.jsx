@@ -43,7 +43,7 @@ const Navber = () => {
                 <NavLink to="/donation-requests">All Donation requests</NavLink>
             </li>
             <li>
-                <NavLink to="/blog">blog</NavLink>
+                <NavLink to="/Blogpage">Blogs</NavLink>
             </li>
         </>
     );
