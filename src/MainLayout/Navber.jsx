@@ -46,7 +46,7 @@ const Navber = () => {
                 <NavLink to="/Blogpage">Blogs</NavLink>
             </li>
             <li>
-                <NavLink to="/">Founding</NavLink>
+                <NavLink to="/foundingpage">Founding</NavLink>
             </li>
         </>
     );
@@ -58,7 +58,7 @@ const Navber = () => {
                     <div className="">
                         <div className="drawer lg:hidden block ">
                             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-                            <div className="drawer-content border">
+                            <div className="drawer-content ">
                                 {/* Page content here */}
                                 <label htmlFor="my-drawer" className="  ">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
@@ -83,7 +83,7 @@ const Navber = () => {
 
                         </div>
                     </div>
-                    <div className='hidden border  lg:block w-[9%] cursor-pointer'>
+                    <div className='hidden   lg:block w-[9%] cursor-pointer'>
                         <Link to={'/'}>
                             <img className='w-full' src={logo} alt="Logo" />
                         </Link>

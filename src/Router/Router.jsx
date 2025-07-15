@@ -23,6 +23,7 @@ import NotFound from "../Component/NotFound";
 import DonorPrivetRouter from "./DonorPrivetRouter";
 import AdminAndVolunTeer from "./AdminAndVolunTeer";
 import Blog from "../Component/Blog";
+import Founding from "../Found/Founding";
 
 
 export const router = createBrowserRouter([
@@ -59,6 +60,11 @@ export const router = createBrowserRouter([
             }, {
                 path: '/Blogpage',
                 Component: Blog
+            },{
+                path:'/foundingpage',
+                element : <PrivetRouter>
+                    <Founding></Founding>
+                </PrivetRouter>
             }
         ]
     },

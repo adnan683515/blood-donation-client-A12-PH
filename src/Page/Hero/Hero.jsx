@@ -36,7 +36,7 @@ const Hero = () => {
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
                             <Link to={`${user ? '/searchdonor' : '/signup'}`} className="bg-gradient-to-r from-black to-red-600 w-[50%] text-white px-5 py-2 rounded">
-                                Search
+                                Search Donors
                             </Link>
                         </div>
                     </div>

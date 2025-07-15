@@ -3,21 +3,19 @@ import React from 'react';
 import AxiosSequere from '../Axios/AxiosSequere';
 import AuthHook from './Share/Hooks/AuthHook';
 import { Bars } from 'react-loader-spinner';
+import AxiosHook from './../Axios/AxiosHook';
 
 const Blog = () => {
-    const baseURl = AxiosSequere();
-    const { user, loading } = AuthHook();
-
+    const baseURl = AxiosHook()
     const { data: BLogslist = [], isLoading } = useQuery({
         queryKey: ['all-blogs'],
-        enabled: !!user && !loading,
         queryFn: async () => {
             const result = await baseURl.get(`/blogpost?statustype=Publish`);
             return result?.data;
         },
     });
 
-    if (!user || loading || isLoading) {
+    if (isLoading) {
         return (
             <div className="min-h-screen flex justify-center items-center">
                 <Bars height="50" width="50" color="#e11d48" ariaLabel="bars-loading" visible={true} />
