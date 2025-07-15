@@ -56,9 +56,9 @@ export const router = createBrowserRouter([
             }, {
                 path: "/errorpage",
                 Component: NotFound
-            },{
-                path:'/Blogpage',
-                Component : Blog
+            }, {
+                path: '/Blogpage',
+                Component: Blog
             }
         ]
     },
@@ -95,12 +95,16 @@ export const router = createBrowserRouter([
                 </AdminAndVolunTeer>
             }, {
                 path: '/deshboard/content-management',
-                Component: ContentManagMent
+                element: <AdminAndVolunTeer>
+                    <ContentManagMent></ContentManagMent>
+                </AdminAndVolunTeer>
             }
         ]
     }
     , {
-        path: "/**",
-        element: <h1>eroro page</h1>
+        path: "/*",
+        element: <div className="h-screen flex items-center justify-center bg-gray-100">
+            <h1 className="text-3xl font-semibold text-gray-700">Error page — Not Found</h1>
+        </div>
     }
 ])

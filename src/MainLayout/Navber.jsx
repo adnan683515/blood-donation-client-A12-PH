@@ -45,6 +45,9 @@ const Navber = () => {
             <li>
                 <NavLink to="/Blogpage">Blogs</NavLink>
             </li>
+            <li>
+                <NavLink to="/">Founding</NavLink>
+            </li>
         </>
     );
 
@@ -55,9 +58,9 @@ const Navber = () => {
                     <div className="">
                         <div className="drawer lg:hidden block ">
                             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-                            <div className="drawer-content">
+                            <div className="drawer-content border">
                                 {/* Page content here */}
-                                <label htmlFor="my-drawer" className=" ">
+                                <label htmlFor="my-drawer" className="  ">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round"
@@ -69,8 +72,9 @@ const Navber = () => {
                                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay">hi</label>
                                 <ul className="menu  relative min-h-full bg-gray-950 text-white w-80 p-4">
                                     {/* Sidebar content here */}
-                                    <li><a>Sidebar Item 1</a></li>
-                                    <li><a>Sidebar Item 2</a></li>
+                                    {
+                                        centerLinks
+                                    }
                                     <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay absolute  right-15">
                                         <FaArrowLeft style={{ color: 'white' }} size={20} />
                                     </label>
@@ -79,7 +83,7 @@ const Navber = () => {
 
                         </div>
                     </div>
-                    <div className='hidden md:block w-[9%] cursor-pointer'>
+                    <div className='hidden border  lg:block w-[9%] cursor-pointer'>
                         <Link to={'/'}>
                             <img className='w-full' src={logo} alt="Logo" />
                         </Link>

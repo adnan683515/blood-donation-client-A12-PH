@@ -24,8 +24,14 @@ const DashboardLayout = () => {
         setRole(res);
     }, [res, roleLoading]);
 
+
+
+
+
+
+
     return (
-        <div className="min-h-screen bg-gray-100 text-black">
+        <div className="min-h-screen  bg-gray-100 text-black">
             <div className="drawer lg:drawer-open">
                 <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
 
@@ -40,7 +46,7 @@ const DashboardLayout = () => {
                     </div>
 
                     {/* Outlet for main pages */}
-                    <div className="p-4">
+                    <div className="">
                         <Outlet />
                     </div>
                 </div>
@@ -52,7 +58,7 @@ const DashboardLayout = () => {
 
                         {/* Sidebar header / Title */}
                         <li className="flex items-center gap-3 mb-6 px-3 py-2 border-b border-gray-700 select-none">
-                         
+
                             <span className="text-xl font-bold">Blood Donation</span>
                         </li>
 

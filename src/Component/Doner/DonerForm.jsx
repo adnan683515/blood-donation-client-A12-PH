@@ -94,9 +94,9 @@ const DonerForm = () => {
     }
 
     return (
-        <div className="max-w-4xl relative mx-auto bg-white p-6 rounded-md shadow-md mt-10">
+        <div className="max-w-4xl relative  mx-auto bg-white p-6 rounded-md shadow-md mt-10">
             <h2 className="text-2xl font-bold text-red-600 mb-6 text-center">Blood Donation Request Form</h2>
-            <h1 className={` absolute top-6 right-2 text-white
+            <h1 className={` absolute -top-2 sm:top-6 right-2 text-white
             ${status !== 'Active' ? 'bg-red-600 px-3  py-1 rounded-sm' : 'bg-green-500 px-3 py-1 rounded-sm'}
                 `}>Status:  {status} </h1>
             <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">

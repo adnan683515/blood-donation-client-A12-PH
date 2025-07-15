@@ -188,12 +188,12 @@ const SearchDoner = () => {
             {/* Search Results */}
             <div>
                 {loader ? (
-                    <div className="flex justify-center items-center py-40">
+                    <div className="flex min-h-screen justify-center items-center py-40">
                         <Bars height="50" width="50" color="#ff0000" visible={true} />
                     </div>
                 ) : search ? (
                     doners.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 w-[98%] mx-auto py-10">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-2 w-[98%] mx-auto py-10">
                             {doners.map((donor) => <SearchDonerDisplay key={donor?._id} donor={donor}></SearchDonerDisplay> )}
                         </div>
                     ) : (

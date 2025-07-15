@@ -7,6 +7,8 @@ import { Bars } from 'react-loader-spinner';
 import RoleHook from '../Share/Hooks/RoleHook';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router';
 
 const Welcome = () => {
     const { user, loading } = AuthHook();
@@ -88,7 +90,7 @@ const Welcome = () => {
     };
 
     return (
-        <div className="px-4 md:px-8 py-12 max-w-7xl mx-auto">
+        <div className="px-4  py-12  mx-auto">
             {/* Welcome Banner */}
             <div className="bg-gradient-to-r from-red-700 to-gray-950 rounded-3xl text-white shadow-2xl p-10 text-center backdrop-blur-lg">
                 <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
@@ -110,8 +112,16 @@ const Welcome = () => {
 
             {/* Table for Donors */}
             {role !== 'Admin' && donationData.length > 0 && (
-                <div className="mt-12 rounded-3xl shadow-lg overflow-hidden bg-white">
-                    <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
+                <div>
+                    <div className="mt-12 rounded-3xl shadow-lg overflow-hidden bg-white">
+                        <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
+                    </div>
+                    <div className='flex justify-center mt-10 items-center'>
+                        <Link  to={'/deshboard/my-donation-requests'} className="bg-gradient-to-r px-3 py-2 rounded-sm from-black to-red-600 text-white flex items-center gap-2">
+                            My Donation Requests
+                            <FaArrowRight className="text-white" />
+                        </Link>
+                    </div>
                 </div>
             )}
         </div>

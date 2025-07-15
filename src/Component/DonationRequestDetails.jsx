@@ -36,6 +36,7 @@ const DonationRequestDetails = () => {
             return result.data;
         },
     });
+    console.log(details,id)
 
     if (isLoading || roleLoading) {
         return <div className="text-center py-10 text-lg font-semibold"><Bars

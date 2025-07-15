@@ -16,7 +16,7 @@ const AllDonationRequest = () => {
             return result?.data
         })
     })
-
+  
     return (
         <div className='w-[98%] mx-auto'>
 
@@ -42,7 +42,7 @@ const AllDonationRequest = () => {
                         wrapperClass=""
                         visible={true}
                     />
-                </div> : <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-2 '>
+                </div> : <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 '>
                     {
                         allRequest?.map((item) => <DisplayDonationRequest key={parseInt(item?._id)} request={item}></DisplayDonationRequest>)
                     }

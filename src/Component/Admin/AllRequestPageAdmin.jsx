@@ -1,6 +1,6 @@
 
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useState } from 'react';
 import AuthHook from '../Share/Hooks/AuthHook';
 import AxiosSequere from '../../Axios/AxiosSequere';
 import { Bars } from 'react-loader-spinner';
@@ -14,16 +14,21 @@ const AllRequestPageAdmin = () => {
     const { user, loading } = AuthHook()
     const axiosSequre = AxiosSequere()
     const [role, roleLoading] = RoleHook()
+    const [showperpage, setShowperpage] = useState(6)
+    const [currentPage,setCurrentPage] = useState(1)
 
     const { data: AllRequestList = [], isLoading, refetch } = useQuery({
         queryKey: ['alldonationRequestList', user?.email],
         enabled: user?.email && !loading,
         queryFn: (async () => {
-            const result = await axiosSequre.get(`/allRequestList/${user?.email}`)
+            const result = await axiosSequre.get(`/allRequestList/${user?.email}/${showperpage}/${currentPage}`)
             return result?.data
         })
 
     })
+    const totalPages = Math.ceil(AllRequestList?.length / showperpage)
+    const pages = [...Array(totalPages)].map((_, i) => i + 1)
+    console.log(pages)
 
 
     const handleStatus = async (e, id) => {
@@ -31,10 +36,10 @@ const AllRequestPageAdmin = () => {
         const action = e.innerText
         if (action === 'Edit' || action === 'Delete') {
             if (action === 'Delete') {
-                    if(role !== 'Admin'){
-                        toast.error("Delete Only Admin")
-                        return
-                    }
+                if (role !== 'Admin') {
+                    toast.error("Delete Only Admin")
+                    return
+                }
 
                 Swal.fire({
                     title: "Are you sure?",
@@ -78,6 +83,10 @@ const AllRequestPageAdmin = () => {
         }
     };
 
+    const handlePage = (pageNumber)=>{
+        setCurrentPage(pageNumber)
+        // refetch()
+    }
 
 
     if (loading || isLoading || roleLoading) {
@@ -106,6 +115,15 @@ const AllRequestPageAdmin = () => {
                     <DeshBoardTabulaerView role={role} handleStatus={handleStatus} DonationRequest={AllRequestList} />
                 </div>
             )}
+
+
+            <div className='flex justify-center mt-5 items-center'>
+                <div className='flex gap-2 flex-wrap'>
+                    {
+                        pages?.map((numberOfpage) => <button  onClick={(e)=>handlePage(e.target.innerText)} className='bg-red-300 rounded-full px-4 border py-2 ' key={numberOfpage} > {numberOfpage} </button>)
+                    }
+                </div>
+            </div>
         </div>
     );
 };

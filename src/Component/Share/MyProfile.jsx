@@ -7,6 +7,7 @@ import { FaEdit } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ImageUpload } from './ImageUpload';
+import toast from 'react-hot-toast';
 
 const MyProfile = () => {
     const { user, loading } = AuthHook();
@@ -82,16 +83,19 @@ const MyProfile = () => {
 
     const onSubmit = async (data) => {
         if (edit) {
-            const { image, upazila, blood, district } = data
-            const imgURl = await ImageUpload(image)
-            console.log(imgURl)
-            const editInformation = { upazila, blood, district }
-            console.log(editInformation)
+            const { photo, upazila, blood, district } = data
+            const image = await ImageUpload(photo[0])
+
+
+            const editInformation = {email: user?.email, upazila, blood, district, image }
+
 
             try {
 
                 const result = await axiosSecure.patch(`/updateprofile`, editInformation)
-                console.log(result)
+                if(result?.data?.modifiedCount){
+                    toast.success("Your Profile Update Done!")
+                }
             }
             catch {
                 //
@@ -115,7 +119,7 @@ const MyProfile = () => {
     return (
         <div className="sm:w-4/5 mx-auto p-4 sm:p-6 bg-white rounded-sm shadow-sm relative text-black">
             {/* Edit Button */}
-            <div className="absolute top-4 right-4 text-red-600 text-xl cursor-pointer">
+            <div className="absolute top-10 sm:top-4 right-4 text-red-600 text-xl cursor-pointer">
                 <FaEdit onClick={() => setEdit(!edit)} />
             </div>
 
@@ -165,7 +169,7 @@ const MyProfile = () => {
                         <label className="block font-semibold">Your Image</label>
                         <input
                             type="file"
-                            {...register('image', { required: 'Image field is required' })}
+                            {...register('photo', { required: 'Image field is required' })}
                             className="w-full p-2 border border-red-500 rounded-sm bg-gray-100"
                         />
                         {

@@ -3,14 +3,17 @@ import React, { useState } from 'react';
 import AuthHook from '../Share/Hooks/AuthHook';
 import AxiosSecure from '../../Axios/AxiosSequere';
 import DeshBoardTabulaerView from '../DeshBoard/DeshBoardTabulaerView';
+import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
+import RoleHook from '../Share/Hooks/RoleHook';
 
 const MyDonationRequest = () => {
     const { user, loading } = AuthHook();
     const axiosSecure = AxiosSecure();
-
+    const [role,roleLoading] = RoleHook()
     const [statusFilter, setStatusFilter] = useState("all");
 
-    const { data: DonationRequest = [], isLoading } = useQuery({
+    const { data: DonationRequest = [], isLoading ,refetch } = useQuery({
         queryKey: ['mydonationRequest', user?.email],
         enabled: !loading,
         queryFn: async () => {
@@ -23,7 +26,59 @@ const MyDonationRequest = () => {
         ? DonationRequest
         : DonationRequest.filter(item => item.status === statusFilter);
 
-    if (isLoading) {
+    const handleStatus = async (e, id) => {
+
+        const action = e.innerText
+        if (action === 'Edit' || action === 'Delete') {
+            if (action === 'Delete') {
+                if (role !== 'Donor') {
+                    toast.error("Delete Only  Donor")
+                    return
+                }
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "This donation request will be permanently deleted. You won't be able to undo this action!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!",
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+
+                        const result = await axiosSecure.delete(`/deleteRequest/${id}`)
+                        if (result?.data?.deletedCount) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                            refetch()
+                        }
+
+                    }
+                });
+
+            }
+            return
+        }
+
+
+        try {
+            const result = await axiosSecure.patch(`/donationRequestUpdate/${id}/${e.innerText}`);
+            if (result?.data?.modifiedCount) {
+                e.innerText === 'Done'
+                    ? toast.success("Donation Request Successfully Done")
+                    : toast.error("Donation Request Cancel!");
+                refetch();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    if (isLoading ||roleLoading) {
         return (
             <div className="min-h-screen flex justify-center items-center">
                 <p className="text-lg font-semibold">Loading...</p>
@@ -31,9 +86,7 @@ const MyDonationRequest = () => {
         );
     }
 
-    const handleStatusEvent = () => {
-        console.log("handle event function")
-    }
+
 
     return (
         <div className="px-4 py-8">
@@ -62,7 +115,7 @@ const MyDonationRequest = () => {
 
             {/* Table */}
             <div>
-                <DeshBoardTabulaerView handleStatusEvent={handleStatusEvent} DonationRequest={filteredRequest} />
+                <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={filteredRequest} />
             </div>
         </div>
     );
