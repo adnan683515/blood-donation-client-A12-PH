@@ -20,7 +20,7 @@ const PrivetRouter = ({ children }) => {
     />
     </div>
 
-    console.log("user",user)
+
     
 
     if (!user) return <Navigate to={'/login'}></Navigate>

@@ -28,7 +28,7 @@ const AllRequestPageAdmin = () => {
     })
     const totalPages = Math.ceil(AllRequestList?.length / showperpage)
     const pages = [...Array(totalPages)].map((_, i) => i + 1)
-    console.log(pages)
+    
 
 
     const handleStatus = async (e, id) => {

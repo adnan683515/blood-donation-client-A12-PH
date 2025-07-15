@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const SearchDonerDisplay = ({ donor }) => {
 
-    console.log(donor)
+   
     return (
         <div className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-xl overflow-hidden p-4 gap-4 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
             {/* Donor Image */}

@@ -11,10 +11,10 @@ export default function RequestConfirmModal({ isOpen, close, refetch, id }) {
     const handleConfirmed = async (e) => {
         e.preventDefault()
         const result = await axiosSequre.patch(`/donationRequestUpdate/${id}/inprogress`)
-        console.log(result)
+ 
         if (result?.data?.modifiedCount) {
             const saveDonorInformation = { DonationRequest: id, name: user?.displayName, email: user?.email }
-            console.log(saveDonorInformation)
+       
             const response = await axiosSequre.post('/confirmedReq', saveDonorInformation)
 
             refetch()

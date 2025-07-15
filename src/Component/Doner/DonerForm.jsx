@@ -40,7 +40,7 @@ const DonerForm = () => {
         try {
             //
             const result = await axiosSequere.post('/dontaionRequest', requestInformations)
-            console.log(result)
+           
             if (result?.data?.insertedId) {
                 reset()
                 toast.success('Donation Request Successfully!')

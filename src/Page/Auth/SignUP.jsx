@@ -82,7 +82,7 @@ const SignUP = () => {
                     .then(async () => {
 
                         const result = await axiosHook.post('/user', userInformation)
-                        console.log(result)
+                 
                         setLoader(false)
                         toast.success('Registration successfully!')
                         navigate('/')
