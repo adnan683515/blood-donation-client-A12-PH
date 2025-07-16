@@ -53,24 +53,24 @@ const AxiosSequere = () => {
             );
 
             // Add response interceptor
-            // const responseInterceptor = axiosInstance.interceptors.response.use(
-            //     (res) => res  ,
-            //     (err) => {
-            //         if (err?.response?.status === 401 || err?.response?.status === 403) {
-            //             handleLogout()
-            //                 .then(() => {
-            //                     console.log("Logged out due to token issue.");
-            //                 })
-            //                 .catch(console.error);
-            //         }
-            //         return Promise.reject(err);
-            //     }
-            // );
+            const responseInterceptor = axiosInstance.interceptors.response.use(
+                (res) => res  ,
+                (err) => {
+                    if (err?.response?.status === 401 || err?.response?.status === 403) {
+                        handleLogout()
+                            .then(() => {
+                                console.log("Logged out due to token issue.");
+                            })
+                            .catch(console.error);
+                    }
+                    return Promise.reject(err);
+                }
+            );
 
             // Cleanup to prevent multiple interceptors on re-renders
             return () => {
                 axiosInstance.interceptors.request.eject(requestInterceptor);
-                // axiosInstance.interceptors.response.eject(responseInterceptor);
+                axiosInstance.interceptors.response.eject(responseInterceptor);
             };
         }
     }, [user, loading,handleLogout]);

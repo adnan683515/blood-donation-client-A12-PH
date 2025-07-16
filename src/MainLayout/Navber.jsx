@@ -48,6 +48,9 @@ const Navber = () => {
             <li>
                 <NavLink to="/foundingpage">Founding</NavLink>
             </li>
+            <li>
+                <NavLink to="/about">About us</NavLink>
+            </li>
         </>
     );
 
@@ -110,26 +113,64 @@ const Navber = () => {
                             <>
                                 <IconButton onClick={handleClick} size="small">
                                     <Avatar
-                                        sx={{ width: 50, height: 50 }}
-                                        className="bg-white"
+                                        sx={{
+                                            width: 50,
+                                            height: 50,
+                                            border: '2px solid #dc2626', // red-600
+                                            backgroundColor: 'white',
+                                        }}
                                         alt={user.displayName || "User"}
                                         src={user.photoURL}
                                     />
                                 </IconButton>
-                                <Menu
 
+                                <Menu
                                     anchorEl={anchorEl}
                                     open={open}
                                     onClose={handleClose}
                                     onClick={handleClose}
                                     PaperProps={{
-                                        elevation: 3,
-                                        sx: { mt: 1.5 }
+                                        elevation: 4,
+                                        sx: {
+                                            mt: 1.5,
+                                            px: 1,
+                                            py: 0.5,
+                                            borderRadius: 2,
+                                            background: 'linear-gradient(to right, #fef2f2, #ffe4e6)', // light rose gradient
+                                            color: '#1f2937', // text-gray-800
+                                            minWidth: 180,
+                                        },
                                     }}
                                 >
-                                    <MenuItem component={Link} to="/profile">Profile</MenuItem>
-                                    <MenuItem component={Link} to="/deshboard">Dashboard</MenuItem>
-                                    <MenuItem onClick={logout}>Logout</MenuItem>
+                                    
+                                    <MenuItem
+                                        component={Link}
+                                        to="/deshboard"
+                                        sx={{
+                                            fontWeight: 500,
+                                            borderRadius: 1,
+                                            '&:hover': {
+                                                backgroundColor: '#fca5a5',
+                                                color: 'white',
+                                            },
+                                        }}
+                                    >
+                                        Dashboard
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={logout}
+                                        sx={{
+                                            fontWeight: 500,
+                                            borderRadius: 1,
+                                            color: '#dc2626',
+                                            '&:hover': {
+                                                backgroundColor: '#fecaca', // red-200
+                                                color: '#b91c1c',
+                                            },
+                                        }}
+                                    >
+                                        Logout
+                                    </MenuItem>
                                 </Menu>
                             </>
                         ) : (

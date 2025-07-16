@@ -90,9 +90,9 @@ const Welcome = () => {
     };
 
     return (
-        <div className="px-4  py-12  mx-auto">
+        <div className="px-4 py-12 mx-auto">
             {/* Welcome Banner */}
-            <div className="bg-gradient-to-r from-red-700 to-gray-950 rounded-3xl text-white shadow-2xl p-10 text-center backdrop-blur-lg">
+            <div className="bg-gradient-to-r from-rose-600 to-red-600  rounded-3xl text-white shadow-2xl p-10 text-center backdrop-blur-lg">
                 <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
                     Welcome, {user?.displayName || 'Hero'} ({role})
                 </h1>
@@ -102,11 +102,10 @@ const Welcome = () => {
             {/* Stats for Admin/Volunteer */}
             {(role === 'Admin' || role === 'Volunteer') && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-                    {/* Card */}
                     <StatCard label="Total Donors" value={countDonors} color="rose" icon="❤️" />
-                    <StatCard label="Total Users" value={totalUser} color="sky" icon="👥" />
+                    <StatCard label="Total Users" value={totalUser} color="red" icon="👥" />
                     <StatCard label="Volunteers" value={countVolunteer} color="green" icon="🤝" />
-                    <StatCard label="Requests" value={request} color="purple" icon="📋" />
+                    <StatCard label="Requests" value={request} color="rose" icon="📋" />
                 </div>
             )}
 
@@ -117,7 +116,7 @@ const Welcome = () => {
                         <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
                     </div>
                     <div className='flex justify-center mt-10 items-center'>
-                        <Link  to={'/deshboard/my-donation-requests'} className="bg-gradient-to-r px-3 py-2 rounded-sm from-black to-red-600 text-white flex items-center gap-2">
+                        <Link to={'/deshboard/my-donation-requests'} className="bg-gradient-to-r px-3 py-2 rounded-sm from-black to-red-600 text-white flex items-center gap-2">
                             My Donation Requests
                             <FaArrowRight className="text-white" />
                         </Link>
@@ -128,15 +127,31 @@ const Welcome = () => {
     );
 };
 
-// Clean Stat Card
-const StatCard = ({ label, value, color, icon }) => (
-    <div className="bg-white rounded-3xl shadow-xl p-6 text-center hover:scale-[1.03] transition-all">
-        <div className={`w-14 h-14 flex items-center justify-center mx-auto mb-4 rounded-full bg-${color}-100 text-3xl`}>
-            {icon}
+// 💎 Stylish StatCard Component
+const StatCard = ({ label, value, color, icon }) => {
+    const bgColor = {
+        rose: 'from-rose-100 to-rose-200',
+        sky: 'from-sky-100 to-sky-200',
+        green: 'from-green-100 to-green-200',
+        purple: 'from-purple-100 to-purple-200',
+    }[color];
+
+    const textColor = {
+        rose: 'text-rose-600',
+        sky: 'text-sky-600',
+        green: 'text-green-600',
+        purple: 'text-purple-600',
+    }[color];
+
+    return (
+        <div className={`rounded-3xl shadow-lg p-6 text-center bg-gradient-to-br ${bgColor} hover:scale-[1.03] transition-all duration-300`}>
+            <div className={`w-16 h-16 flex items-center justify-center mx-auto mb-4 rounded-full bg-white shadow-inner text-3xl ${textColor}`}>
+                {icon}
+            </div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-1">{label}</h3>
+            <p className={`text-4xl font-extrabold ${textColor}`}>{value ?? 0}</p>
         </div>
-        <h3 className="text-xl font-semibold mb-1">{label}</h3>
-        <p className={`text-4xl font-extrabold text-${color}-600`}>{value ?? 0}</p>
-    </div>
-);
+    );
+};
 
 export default Welcome;

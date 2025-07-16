@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { Bars } from 'react-loader-spinner';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router'; 
+import { Link } from 'react-router';
 
 import AuthHook from '../Share/Hooks/AuthHook';
 import AxiosSequere from '../../Axios/AxiosSequere';
@@ -41,8 +41,6 @@ const AllUserpage = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 await axiosSequere.patch(`/userRoleupdate/${id}/${newStatus}`);
-
-
                 refetch();
                 Swal.fire('Success!', `User status updated to ${newStatus}`, 'success');
             }
@@ -50,7 +48,6 @@ const AllUserpage = () => {
     };
 
     const handleRoleChange = async (endpoint, userIdOrEmail, roleName) => {
-        const isId = endpoint.includes("userRoleupdate");
         Swal.fire({
             title: `Make ${roleName}?`,
             text: `Do you want to promote this user to ${roleName}?`,
@@ -62,9 +59,6 @@ const AllUserpage = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const res = await axiosSequere.patch(`/${endpoint}/${userIdOrEmail}/${roleName}`);
-
-
-
                 if (res?.data?.modifiedCount || res?.data?.acknowledged) {
                     Swal.fire({
                         title: "Success!",
@@ -94,11 +88,17 @@ const AllUserpage = () => {
 
     return (
         <Box sx={{ p: 3 }}>
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
-                All Users
-            </Typography>
 
-            {/* Filter Dropdown */}
+            <Box className="mb-6 bg-gradient-to-r from-red-100 to-white p-6 rounded-2xl shadow-md border border-red-200">
+                <Typography variant="h4" fontWeight="bold" color="red" gutterBottom>
+                    👥 Manage All Users
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    As an admin, you can <strong>promote roles</strong>, <strong>block users</strong>, or <strong>change their status</strong>.
+                </Typography>
+            </Box>
+
+
             <Box sx={{ mb: 2 }}>
                 <Typography fontWeight="medium" sx={{ mb: 1 }}>
                     Filter by Status:
@@ -115,11 +115,13 @@ const AllUserpage = () => {
                 </Select>
             </Box>
 
-            {/* User Table */}
-            <TableContainer component={Paper}>
+
+            <TableContainer component={Paper} sx={{ borderRadius: 4 }}>
                 <Table>
-                    <TableHead>
-                        <TableRow sx={{ background: 'linear-gradient(to right, black, red)' }}>
+                    <TableHead >
+                        <TableRow sx={{
+                            background: 'linear-gradient(to right, #e11d48, #dc2626)',
+                        }}>
                             <TableCell sx={{ color: 'white' }}>Avatar</TableCell>
                             <TableCell sx={{ color: 'white' }}>Name</TableCell>
                             <TableCell sx={{ color: 'white' }}>Email</TableCell>
@@ -135,17 +137,17 @@ const AllUserpage = () => {
                                     <TableCell><Avatar alt={user.name} src={user.image} /></TableCell>
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.role}</TableCell>
                                     <TableCell>
-                                        <span className={`px-2 py-1 rounded text-white text-sm font-medium ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'
-                                            }`}>
+                                        <span className="capitalize font-semibold">{user.role}</span>
+                                    </TableCell>
+                                    <TableCell>
+                                        <span className={`px-2 py-1 rounded text-white text-sm font-medium ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'}`}>
                                             {user.status}
                                         </span>
                                     </TableCell>
                                     <TableCell>
                                         <Box className="flex flex-col sm:flex-row justify-center items-center gap-2 flex-wrap">
-
-                                            {/* Status Button */}
+                                            {/* Status Toggle Button */}
                                             <Button
                                                 size="small"
                                                 variant="contained"
@@ -164,7 +166,7 @@ const AllUserpage = () => {
                                                 {user.status === 'Active' ? 'Block' : 'Activate'}
                                             </Button>
 
-                                            {/* Role Buttons */}
+                                            {/* Role Change Buttons */}
                                             {user.role !== 'Volunteer' && (
                                                 <Button
                                                     size="small"
@@ -190,13 +192,13 @@ const AllUserpage = () => {
                                                         width: 130,
                                                         textTransform: 'none',
                                                         fontWeight: 500,
-                                                        background: 'linear-gradient(to right, black, red)',
+                                                        background: 'linear-gradient(to right, #e11d48, #dc2626)', // rose-600 → red-600
                                                         color: 'white',
                                                         '&:hover': {
-                                                            background: 'linear-gradient(to right, #111, #cc0000)',
+                                                            background: 'linear-gradient(to right, #be123c, #b91c1c)', // hover darker shades
                                                         },
                                                     }}
-                                                    onClick={() => handleRoleChange('userRoleupdate',  user._id, 'Donor')}
+                                                    onClick={() => handleRoleChange('userRoleupdate', user._id, 'Donor')}
                                                 >
                                                     Make Donor
                                                 </Button>
@@ -213,7 +215,7 @@ const AllUserpage = () => {
                                                         color: '#fff',
                                                         '&:hover': { backgroundColor: '#000' }
                                                     }}
-                                                    onClick={() => handleRoleChange('userRoleupdate',  user._id, 'Admin')}
+                                                    onClick={() => handleRoleChange('userRoleupdate', user._id, 'Admin')}
                                                 >
                                                     Make Admin
                                                 </Button>
@@ -232,7 +234,7 @@ const AllUserpage = () => {
                     </TableBody>
                 </Table>
 
-                {/* Pagination */}
+                {/* 📄 Pagination */}
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 15]}
                     component="div"

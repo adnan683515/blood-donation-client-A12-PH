@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import AuthHook from '../Share/Hooks/AuthHook';
@@ -10,35 +9,31 @@ import Swal from 'sweetalert2';
 import RoleHook from '../Share/Hooks/RoleHook';
 
 const AllRequestPageAdmin = () => {
-
-    const { user, loading } = AuthHook()
-    const axiosSequre = AxiosSequere()
-    const [role, roleLoading] = RoleHook()
-    const [showperpage, setShowperpage] = useState(6)
-    const [currentPage,setCurrentPage] = useState(1)
+    const { user, loading } = AuthHook();
+    const axiosSequre = AxiosSequere();
+    const [role, roleLoading] = RoleHook();
+    const [showperpage, setShowperpage] = useState(6);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const { data: AllRequestList = [], isLoading, refetch } = useQuery({
         queryKey: ['alldonationRequestList', user?.email],
         enabled: user?.email && !loading,
-        queryFn: (async () => {
-            const result = await axiosSequre.get(`/allRequestList/${user?.email}/${showperpage}/${currentPage}`)
-            return result?.data
-        })
+        queryFn: async () => {
+            const result = await axiosSequre.get(`/allRequestList/${user?.email}/${showperpage}/${currentPage}`);
+            return result?.data;
+        }
+    });
 
-    })
-    const totalPages = Math.ceil(AllRequestList?.length / showperpage)
-    const pages = [...Array(totalPages)].map((_, i) => i + 1)
-    
-
+    const totalPages = Math.ceil(AllRequestList?.length / showperpage);
+    const pages = [...Array(totalPages)].map((_, i) => i + 1);
 
     const handleStatus = async (e, id) => {
-
-        const action = e.innerText
+        const action = e.innerText;
         if (action === 'Edit' || action === 'Delete') {
             if (action === 'Delete') {
                 if (role !== 'Admin') {
-                    toast.error("Delete Only Admin")
-                    return
+                    toast.error("Delete Only Admin");
+                    return;
                 }
 
                 Swal.fire({
@@ -51,24 +46,20 @@ const AllRequestPageAdmin = () => {
                     confirmButtonText: "Yes, delete it!",
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-
-                        const result = await axiosSequre.delete(`/deleteRequest/${id}`)
+                        const result = await axiosSequre.delete(`/deleteRequest/${id}`);
                         if (result?.data?.deletedCount) {
                             Swal.fire({
                                 title: "Deleted!",
                                 text: "Your file has been deleted.",
                                 icon: "success"
                             });
-                            refetch()
+                            refetch();
                         }
-
                     }
                 });
-
             }
-            return
+            return;
         }
-
 
         try {
             const result = await axiosSequre.patch(`/donationRequestUpdate/${id}/${e.innerText}`);
@@ -83,11 +74,9 @@ const AllRequestPageAdmin = () => {
         }
     };
 
-    const handlePage = (pageNumber)=>{
-        setCurrentPage(pageNumber)
-        // refetch()
-    }
-
+    const handlePage = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     if (loading || isLoading || roleLoading) {
         return (
@@ -97,31 +86,52 @@ const AllRequestPageAdmin = () => {
         );
     }
 
-
     return (
-        <div>
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                    <span>📋</span>
-                    All Donation Requests <span className="text-red-600">({AllRequestList?.length})</span>
+        <div className="px-4 py-10">
+            {/* Header Section */}
+            <div className="mb-8 bg-gradient-to-r from-red-100 to-red-200 p-6 rounded-2xl shadow-lg">
+                <h1 className="text-3xl font-bold text-red-600 flex items-center gap-2">
+                    📋 All Donation Requests
+                    <span className="text-white bg-red-600 px-3 py-1 rounded-full text-base font-semibold">
+                        {AllRequestList?.length}
+                    </span>
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-600 mt-1">
                     Below is a list of all donation requests submitted by users. You can view, filter, or manage them from here.
                 </p>
             </div>
 
+            {/* Optional: Admin Info */}
+            {role === 'Admin' && (
+                <div className="mb-10 bg-white rounded-2xl p-6 shadow-md border border-dashed border-red-200">
+                    <p className="text-sm text-gray-600">
+                        <span className="font-semibold text-gray-800">Admin Panel:</span> You have full control over donation requests. You can edit, delete, or mark them as done/cancelled.
+                    </p>
+                </div>
+            )}
+
+            {/* Request Table */}
             {Array.isArray(AllRequestList) && AllRequestList.length > 0 && (
-                <div className='relative overflow-hidden mt-10'>
+                <div className='bg-white shadow-xl rounded-2xl overflow-hidden'>
                     <DeshBoardTabulaerView role={role} handleStatus={handleStatus} DonationRequest={AllRequestList} />
                 </div>
             )}
 
-
-            <div className='flex justify-center mt-5 items-center'>
+            {/* Pagination */}
+            <div className='flex justify-center mt-8 items-center'>
                 <div className='flex gap-2 flex-wrap'>
-                    {
-                        pages?.map((numberOfpage) => <button  onClick={(e)=>handlePage(e.target.innerText)} className='bg-red-300 rounded-full px-4 border py-2 ' key={numberOfpage} > {numberOfpage} </button>)
-                    }
+                    {pages?.map((numberOfPage) => (
+                        <button
+                            key={numberOfPage}
+                            onClick={() => handlePage(numberOfPage)}
+                            className={`px-4 py-2 rounded-full border transition-all ${currentPage === numberOfPage
+                                    ? 'bg-red-600 text-white font-semibold shadow-md'
+                                    : 'bg-red-100 text-red-600 hover:bg-red-200'
+                                }`}
+                        >
+                            {numberOfPage}
+                        </button>
+                    ))}
                 </div>
             </div>
         </div>

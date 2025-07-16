@@ -14,7 +14,7 @@ const SearchDoner = () => {
     const [doners, setDoners] = useState([]);
     const [loader, setLoader] = useState(false);
     const [search, setSearch] = useState(false);
-    const {user} = AuthHook()
+    const { user } = AuthHook()
 
     const {
         register,
@@ -27,7 +27,7 @@ const SearchDoner = () => {
         setLoader(true);
         setSearch(true);
         const { blood, upazila } = data;
-        const searchInfo = { blood, upazila, district, role: 'Donor',email: user?.email };
+        const searchInfo = { blood, upazila, district, role: 'Donor', email: user?.email };
         const queryString = new URLSearchParams(searchInfo).toString();
         try {
             const result = await axiosSequre.get(`/donor?${queryString}`);
@@ -69,7 +69,7 @@ const SearchDoner = () => {
 
     return (
         <div>
-            {/* Banner and Search Form */}
+
             <div
                 className="bg-cover bg-center bg-no-repeat py-16 px-4"
                 style={{
@@ -150,7 +150,7 @@ const SearchDoner = () => {
                             <div className="w-full mt-2 flex justify-center">
                                 <button
                                     type="submit"
-                                    className="w-full cursor-pointer hover:scale-95 duration-1000 max-w-xs bg-gradient-to-r from-red-600 to-black text-white font-semibold py-2 px-4 rounded hover:bg-opacity-90"
+                                    className="w-full cursor-pointer hover:scale-95 duration-1000 max-w-xs bg-gradient-to-r from-rose-500 to-red-600 text-white font-semibold py-2 px-4 rounded hover:bg-opacity-90"
                                 >
                                     Search
                                 </button>
@@ -160,7 +160,7 @@ const SearchDoner = () => {
                 </div>
             </div>
 
-            {/* Initial Info Message */}
+
             {!search && (
                 <div className="flex flex-col w-[90%] md:w-[50%] mx-auto items-center justify-between gap-6 bg-white sm:p-6 rounded py-10 mt-10">
                     <div className="flex-1 text-center sm:text-left">
@@ -194,7 +194,7 @@ const SearchDoner = () => {
                 ) : search ? (
                     doners.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3  gap-2 w-[98%] mx-auto py-10">
-                            {doners.map((donor) => <SearchDonerDisplay key={donor?._id} donor={donor}></SearchDonerDisplay> )}
+                            {doners.map((donor) => <SearchDonerDisplay key={donor?._id} donor={donor}></SearchDonerDisplay>)}
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center p-6 md:p-10 bg-white rounded-xl shadow-md w-full max-w-md mx-auto mt-10">

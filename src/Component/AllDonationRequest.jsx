@@ -21,10 +21,10 @@ const AllDonationRequest = () => {
         <div className='w-[98%] mx-auto'>
 
             <div className="text-center sm:text-start  rounded-lg p-6  mx-auto my-8 shadow-lg">
-                <h2 className="text-2xl font-extrabold text-red-700 mb-2 ">
+                <h2 className="text-2xl font-extrabold text-red-600 mb-2 ">
                     Urgent Blood Donation Requests – Help Save a Life
                 </h2>
-                <p className="text-red-800 text-lg leading-relaxed ">
+                <p className="text-red-700 text-lg leading-relaxed ">
                     These are pending blood donation requests made on behalf of patients who are in critical need.
                     Each request here represents someone’s fight for life — a friend, a parent, a child.
 

@@ -189,7 +189,7 @@ export default function DeshBoardTabulaerView({ DonationRequest = [], handleStat
             <Table aria-label="collapsible table">
                 <TableHead
                     sx={{
-                        background: 'linear-gradient(to right, black, #dc2626)',
+                        background: 'linear-gradient(to right, #e11d48, #dc2626)',
                     }}
                 >
                     <TableRow>

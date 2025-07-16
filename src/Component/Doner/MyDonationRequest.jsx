@@ -6,18 +6,19 @@ import DeshBoardTabulaerView from '../DeshBoard/DeshBoardTabulaerView';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import RoleHook from '../Share/Hooks/RoleHook';
+import { Bars } from 'react-loader-spinner';
 
 const MyDonationRequest = () => {
     const { user, loading } = AuthHook();
     const axiosSecure = AxiosSecure();
-    const [role,roleLoading] = RoleHook()
+    const [role, roleLoading] = RoleHook()
     const [statusFilter, setStatusFilter] = useState("all");
 
-    const { data: DonationRequest = [], isLoading ,refetch } = useQuery({
+    const { data: DonationRequest = [], isLoading, refetch } = useQuery({
         queryKey: ['mydonationRequest', user?.email],
-        enabled: !loading,
+        enabled: !!user && !loading,
         queryFn: async () => {
-            const result = await axiosSecure.get(`/loadDontaionRequest?email=${user?.email}`);
+            const result = await axiosSecure.get(`/LoadAllDonationMyRequest?email=${user?.email}`);
             return result?.data;
         }
     });
@@ -78,10 +79,10 @@ const MyDonationRequest = () => {
         }
     };
 
-    if (isLoading ||roleLoading) {
+    if (isLoading || roleLoading) {
         return (
-            <div className="min-h-screen flex justify-center items-center">
-                <p className="text-lg font-semibold">Loading...</p>
+            <div className='min-h-screen flex justify-center items-center'>
+                <Bars height="50" width="50" color="#ff0000" ariaLabel="bars-loading" visible={true} />
             </div>
         );
     }

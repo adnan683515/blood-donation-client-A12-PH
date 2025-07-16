@@ -15,7 +15,7 @@ const DisplayDonationRequest = ({ request }) => {
                 </p>
 
                 <Link to={`/donation-requests/${request?._id}`} className='w-full  pt-2'>
-                    <button className='w-full cursor-pointer py-2 rounded-md bg-gradient-to-r from-red-600 to-black text-white font-semibold tracking-wide shadow-lg hover:opacity-90 transition duration-200'>
+                    <button className='w-full cursor-pointer py-2 rounded-md bg-gradient-to-r from-rose-500 to-red-600  text-white font-semibold tracking-wide shadow-lg hover:opacity-90 transition duration-200'>
                         View More
                     </button>
                 </Link>

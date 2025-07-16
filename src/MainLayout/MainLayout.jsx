@@ -14,8 +14,19 @@ const MainLayout = () => {
     useEffect(() => {
         setLoad(false)
     }, [])
-    if (laod) return <div className='min-h-screen flex justify-center items-center'>
-        <RingLoader style={{ color: 'red' }} />
+    if (laod) return <div className='flex min-h-screen justify-center items-center '>
+        <div>
+            <Bars
+                height="50"
+                width="50"
+
+                color="#ff0000" // white color
+                ariaLabel="bars-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+            />
+        </div>
     </div>
     return (
         <div >
@@ -29,6 +40,7 @@ const MainLayout = () => {
                     navigation.state == 'loading' ? <Bars
                         height="50"
                         width="50"
+
                         color="#ffffff" // white color
                         ariaLabel="bars-loading"
                         wrapperStyle={{}}

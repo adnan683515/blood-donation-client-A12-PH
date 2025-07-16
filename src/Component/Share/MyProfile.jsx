@@ -319,7 +319,7 @@ const MyProfile = () => {
                     <button
                         type="submit"
                         disabled={!edit}
-                        className={`px-6 w-full py-2 ${edit ? 'bg-gradient-to-r from-black to-red-600' : 'bg-gray-400 cursor-not-allowed'} text-white rounded-sm transition`}
+                        className={`px-6 w-full py-2 ${edit ? 'bg-gradient-to-r from-rose-600 to-red-600' : 'bg-gray-400 cursor-not-allowed'} text-white rounded-sm transition`}
                     >
                         Submit
                     </button>

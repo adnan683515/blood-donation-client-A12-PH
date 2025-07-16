@@ -70,7 +70,7 @@ export function SidebarProvider({
     setMenuRefsVersion(prev => prev + 1);
   }, []);
 
-  // Helper function to encapsulate indicator positioning logic
+ 
   const updateIndicatorPosition = React.useCallback((id: string | null) => {
     const indicator = menuRef.current?.querySelector('.sidebar-menu-indicator') as HTMLElement | null;
 

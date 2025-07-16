@@ -127,7 +127,7 @@ const DashboardLayout = () => {
                         </li>
 
                         {/* Logout Button */}
-                        <li className="absolute bottom-5 left-4 right-4 bg-gradient-to-r from-black to-red-600 rounded shadow-md">
+                        <li className="absolute bottom-5 left-4 right-4 bg-gradient-to-r from-rose-600 to-red-600 rounded shadow-md">
                             <button onClick={logout} className="w-full flex justify-between items-center px-4 py-2 text-white hover:text-gray-300">
                                 <span className="text-lg">Logout</span>
                                 <FiLogOut size={20} />

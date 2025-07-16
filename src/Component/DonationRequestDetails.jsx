@@ -53,8 +53,8 @@ const DonationRequestDetails = () => {
     return (
         <div className="sm:w-[80%] mx-auto px-4 py-10 ">
             {/* Inspiring header for donors */}
-            <div className="bg-red-50 border border-red-300 text-red-800 p-6 rounded-xl  mb-6 text-center">
-                <h2 className="text-2xl font-bold mb-2">Your Blood Can Save a Life ❤️</h2>
+            <div className="bg-red-50 border border-red-300 text-red-600 p-6 rounded-xl  mb-6 text-center">
+                <h2 className="text-2xl  font-bold mb-2">Your Blood Can Save a Life ❤️</h2>
                 <p className="text-lg leading-relaxed">
                     This patient urgently needs <span className="font-semibold text-red-600">{details.bloodGroup}</span> blood.
                     If you’re a match, please consider donating — your help can truly make a life-saving difference.
@@ -90,7 +90,7 @@ const DonationRequestDetails = () => {
                 <button
 
                     onClick={open}
-                    className="w-full py-3 bg-gradient-to-r from-black to-red-600 text-white text-lg font-semibold rounded-xl shadow-md hover:opacity-90 transition"
+                    className="w-full py-3 bg-gradient-to-r from-rose-500 to-red-600 text-white text-lg font-semibold rounded-xl shadow-md hover:opacity-90 transition"
 
                 >
                     Donate Now
