@@ -20,6 +20,18 @@ const Welcome = () => {
     const [totalUser, setTotalUser] = useState(null);
     const [request, setRequest] = useState(null);
 
+
+    const { data: TotalFund = null, isLoading } = useQuery({
+        queryKey: ['allFunds'],
+        queryFn: async () => {
+            const result = await axiosSecure.get('/loadFund');
+            const totalMoney = result.data.reduce((acc, item) => acc + item.money, 0);
+
+            return totalMoney
+        }
+    });
+
+
     const { data: donationData = [], refetch } = useQuery({
         queryKey: ['donationRequest', user?.email],
         enabled: !loading && !roleLoading && role !== 'Admin',
@@ -43,7 +55,7 @@ const Welcome = () => {
         },
     });
 
-    const isInitialLoading = loading || roleLoading || !role;
+    const isInitialLoading = loading || roleLoading || !role || isLoading;
     if (isInitialLoading) {
         return (
             <div className="min-h-screen flex justify-center items-center">
@@ -90,10 +102,10 @@ const Welcome = () => {
     };
 
     return (
-        <div className="px-4 py-12 mx-auto">
+        <div className="sm:px-4 px-2 py-12 mx-auto">
             {/* Welcome Banner */}
             <div className="bg-gradient-to-r from-rose-600 to-red-600  rounded-3xl text-white shadow-2xl p-10 text-center backdrop-blur-lg">
-                <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
+                <h1 className=" text-2xl sm:text-4xl md:text-5xl font-extrabold mb-3">
                     Welcome, {user?.displayName || 'Hero'} ({role})
                 </h1>
                 <p className="text-lg md:text-xl">Your contribution saves lives. Thank you! 🩸❤️</p>
@@ -101,11 +113,12 @@ const Welcome = () => {
 
             {/* Stats for Admin/Volunteer */}
             {(role === 'Admin' || role === 'Volunteer') && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 mt-12">
                     <StatCard label="Total Donors" value={countDonors} color="rose" icon="❤️" />
                     <StatCard label="Total Users" value={totalUser} color="red" icon="👥" />
                     <StatCard label="Volunteers" value={countVolunteer} color="green" icon="🤝" />
                     <StatCard label="Requests" value={request} color="rose" icon="📋" />
+                    <StatCard label="Fund" value={`${TotalFund} Tk`} color="gray" icon="💳" />
                 </div>
             )}
 
@@ -116,7 +129,7 @@ const Welcome = () => {
                         <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
                     </div>
                     <div className='flex justify-center mt-10 items-center'>
-                        <Link to={'/deshboard/my-donation-requests'} className="bg-gradient-to-r px-3 py-2 rounded-sm from-black to-red-600 text-white flex items-center gap-2">
+                        <Link to={'/deshboard/my-donation-requests'} className="bg-gradient-to-r px-3 py-2 rounded-sm from-rose-600 to-red-600 text-white flex items-center gap-2">
                             My Donation Requests
                             <FaArrowRight className="text-white" />
                         </Link>
@@ -127,7 +140,7 @@ const Welcome = () => {
     );
 };
 
-// 💎 Stylish StatCard Component
+
 const StatCard = ({ label, value, color, icon }) => {
     const bgColor = {
         rose: 'from-rose-100 to-rose-200',

@@ -27,9 +27,6 @@ const DonerForm = () => {
 
     const onSubmit = async (data) => {
 
-
-
-
         const { recipientName, address, requesterName, requesterEmail, upazila, hospital, bloodGroup, date, time, ampm, message } = data
         const timeFix = time + ' ' + ampm
 

@@ -49,10 +49,6 @@ const SignUP = () => {
         setError("")
         const avatarFile = data.avatar[0];
 
-
-
-
-
         if (data?.password !== data?.confirm_password) {
             setLoader(false)
             toast.error("Your password doesn't match")

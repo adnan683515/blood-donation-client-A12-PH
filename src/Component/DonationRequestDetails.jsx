@@ -6,27 +6,17 @@ import RequestConfirmModal from './RequestConfirmModal';
 import RoleHook from './Share/Hooks/RoleHook';
 import { Bars } from 'react-loader-spinner';
 import toast from 'react-hot-toast';
+import AuthHook from './Share/Hooks/AuthHook';
 
 const DonationRequestDetails = () => {
     const { id } = useParams();
     const axiosSecure = AxiosSecure();
     let [isOpen, setIsOpen] = useState(false)
     const [role, roleLoading] = RoleHook()
+    const {user,loading} = AuthHook()
 
 
 
-    function open() {
-
-        if (role !== 'Donor') {
-            toast.error("Only Donors are allowed to perform this action.");
-            return
-        }
-        setIsOpen(true)
-    }
-
-    function close() {
-        setIsOpen(false)
-    }
 
     const { data: details = {}, isLoading, refetch } = useQuery({
         queryKey: ['details', id],
@@ -36,10 +26,25 @@ const DonationRequestDetails = () => {
             return result.data;
         },
     });
-    
+    function open() {
 
-    if (isLoading || roleLoading) {
-        return <div className="text-center py-10 text-lg font-semibold"><Bars
+        if (role !== 'Donor') {
+            toast.error("Only Donors are allowed to perform this action.");
+            return
+        }
+        if(details?.requesterEmail === user?.email){
+            return toast.error("Oops! You can't confirm your own request.");
+        }
+        setIsOpen(true)
+    }
+
+    function close() {
+        setIsOpen(false)
+    }
+
+
+    if (isLoading || roleLoading || loading) {
+        return <div className="flex justify-center items-center text-center py-10 text-lg font-semibold"><Bars
             height="50"
             width="50"
             color="#ff0000 " // white color

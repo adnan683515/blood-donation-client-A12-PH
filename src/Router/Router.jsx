@@ -24,6 +24,8 @@ import DonorPrivetRouter from "./DonorPrivetRouter";
 import AdminAndVolunTeer from "./AdminAndVolunTeer";
 import Blog from "../Component/Blog";
 import Founding from "../Found/Founding";
+import BlogDetails from "../Component/BlogDetails";
+import EditDonationRequest from "../Component/EditDonationRequest";
 
 
 export const router = createBrowserRouter([
@@ -65,6 +67,10 @@ export const router = createBrowserRouter([
                 element : <PrivetRouter>
                     <Founding></Founding>
                 </PrivetRouter>
+            },
+            {
+                path:"/details/:id",
+                Component : BlogDetails
             }
         ]
     },
@@ -104,6 +110,11 @@ export const router = createBrowserRouter([
                 element: <AdminAndVolunTeer>
                     <ContentManagMent></ContentManagMent>
                 </AdminAndVolunTeer>
+            },{
+                path:'/deshboard/UpdateDonationRequest/:id',
+                element : <DonorPrivetRouter>
+                    <EditDonationRequest></EditDonationRequest>
+                </DonorPrivetRouter>
             }
         ]
     }

@@ -19,6 +19,7 @@ import {
 } from '@mui/icons-material';
 import AxiosSecure from './../../Axios/AxiosSequere';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router';
 
 
 function Row({ row, handleStatus, role }) {
@@ -72,8 +73,12 @@ function Row({ row, handleStatus, role }) {
                 <TableCell>
                     <div className="flex gap-2 justify-center">
                         {
-                            role === 'Admin' || <button onClick={(e) => handleStatus(e.target, row?._id)} className="px-3 py-1 bg-gray-100 text-black rounded-md font-semibold">Edit</button>
+                            role === 'Admin' || <Link to={`/deshboard/UpdateDonationRequest/${row?._id}`}>
+
+                                <button onClick={(e) => handleStatus(e.target, row?._id)} className="px-3 py-1 bg-gray-100 text-black rounded-md font-semibold">Edit</button>
+                            </Link>
                         }
+                        {/* /deshboard/UpdateDonationRequest */}
                         <button onClick={(e) => handleStatus(e.target, row?._id)} className="px-3 py-1 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Delete</button>
                     </div>
                 </TableCell>
