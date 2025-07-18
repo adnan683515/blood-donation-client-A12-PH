@@ -51,7 +51,7 @@ const AllDonationRequest = () => {
 
             <div className="my-16 bg-gray-950 text-gray-100 p-6 rounded-xl shadow-lg">
                 <h3 className="text-2xl text-center font-bold text-red-600 mb-4  ">
-                    Why Your Donation Matters ❤️
+                    Why Your Donation Matters 
                 </h3>
                 <p className="text-gray-300 leading-relaxed text-lg">
                     Every blood donation goes beyond the needle—it brings hope, extends lives, and unites communities.
