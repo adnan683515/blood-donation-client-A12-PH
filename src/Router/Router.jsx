@@ -26,6 +26,7 @@ import Blog from "../Component/Blog";
 import Founding from "../Found/Founding";
 import BlogDetails from "../Component/BlogDetails";
 import EditDonationRequest from "../Component/EditDonationRequest";
+import { About } from "../Page/Hero/About";
 
 
 export const router = createBrowserRouter([
@@ -71,6 +72,9 @@ export const router = createBrowserRouter([
             {
                 path:"/details/:id",
                 Component : BlogDetails
+            },{
+                path:'/aboutpage',
+                Component : About
             }
         ]
     },

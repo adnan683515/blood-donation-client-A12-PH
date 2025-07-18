@@ -12,20 +12,16 @@ const AllRequestPageAdmin = () => {
     const { user, loading } = AuthHook();
     const axiosSequre = AxiosSequere();
     const [role, roleLoading] = RoleHook();
-    const [showperpage, setShowperpage] = useState(6);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [filterStatus, setFilterStatus] = useState('All');
 
     const { data: AllRequestList = [], isLoading, refetch } = useQuery({
         queryKey: ['alldonationRequestList', user?.email],
         enabled: user?.email && !loading,
         queryFn: async () => {
-            const result = await axiosSequre.get(`/allRequestList/${user?.email}/${showperpage}/${currentPage}`);
+            const result = await axiosSequre.get(`/allRequestList/${user?.email}`);
             return result?.data;
         }
     });
-
-    const totalPages = Math.ceil(AllRequestList?.length / showperpage);
-    const pages = [...Array(totalPages)].map((_, i) => i + 1);
 
     const handleStatus = async (e, id) => {
         const action = e.innerText;
@@ -74,9 +70,10 @@ const AllRequestPageAdmin = () => {
         }
     };
 
-    const handlePage = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
+    // 🧠 Filtered List
+    const filteredList = AllRequestList.filter(item =>
+        filterStatus === 'All' ? true : item.status === filterStatus
+    );
 
     if (loading || isLoading || roleLoading) {
         return (
@@ -101,6 +98,40 @@ const AllRequestPageAdmin = () => {
                 </p>
             </div>
 
+            {/* ✅ Filtering Section */}
+            <div className="mb-8 flex flex-wrap gap-3 items-center justify-start">
+                <button
+                    onClick={() => setFilterStatus('All')}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'All' ? 'bg-red-500 text-white' : 'border-gray-300 text-gray-700 hover:bg-red-100'} transition`}
+                >
+                    All
+                </button>
+                <button
+                    onClick={() => setFilterStatus('pending')}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'pending' ? 'bg-yellow-500 text-white' : 'border-yellow-400 text-yellow-700 hover:bg-yellow-100'} transition`}
+                >
+                    ⏳ pending
+                </button>
+                <button
+                    onClick={() => setFilterStatus('inprogress')}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'Inprogress' ? 'bg-blue-500 text-white' : 'border-blue-400 text-blue-700 hover:bg-blue-100'} transition`}
+                >
+                    🔄 In Progress
+                </button>
+                <button
+                    onClick={() => setFilterStatus('Done')}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'Done' ? 'bg-green-500 text-white' : 'border-green-400 text-green-700 hover:bg-green-100'} transition`}
+                >
+                    ✅ Done
+                </button>
+                <button
+                    onClick={() => setFilterStatus('Cancel')}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'Cancel' ? 'bg-red-600 text-white' : 'border-red-400 text-red-700 hover:bg-red-100'} transition`}
+                >
+                    ❌ Cancel
+                </button>
+            </div>
+
             {/* Optional: Admin Info */}
             {role === 'Admin' && (
                 <div className="mb-10 bg-white rounded-2xl p-6 shadow-md border border-dashed border-red-200">
@@ -111,29 +142,13 @@ const AllRequestPageAdmin = () => {
             )}
 
             {/* Request Table */}
-            {Array.isArray(AllRequestList) && AllRequestList.length > 0 && (
+            {Array.isArray(filteredList) && filteredList.length > 0 ? (
                 <div className='bg-white shadow-xl rounded-2xl overflow-hidden'>
-                    <DeshBoardTabulaerView role={role} handleStatus={handleStatus} DonationRequest={AllRequestList} />
+                    <DeshBoardTabulaerView role={role} handleStatus={handleStatus} DonationRequest={filteredList} />
                 </div>
+            ) : (
+                <div className='text-center text-gray-500 py-20'>No donation requests found for this filter.</div>
             )}
-
-            {/* Pagination */}
-            <div className='flex justify-center mt-8 items-center'>
-                <div className='flex gap-2 flex-wrap'>
-                    {pages?.map((numberOfPage) => (
-                        <button
-                            key={numberOfPage}
-                            onClick={() => handlePage(numberOfPage)}
-                            className={`px-4 py-2 rounded-full border transition-all ${currentPage === numberOfPage
-                                    ? 'bg-red-600 text-white font-semibold shadow-md'
-                                    : 'bg-red-100 text-red-600 hover:bg-red-200'
-                                }`}
-                        >
-                            {numberOfPage}
-                        </button>
-                    ))}
-                </div>
-            </div>
         </div>
     );
 };

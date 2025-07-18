@@ -1,14 +1,21 @@
 import React from 'react';
 import Hero from './Hero/Hero';
 import Contact from '../Component/Contact';
-import GridSeciton from './Hero/GridSeciton';
+import { GridSection } from './Hero/GridSeciton';
+import { BloodStats } from './Hero/BloodStats';
+
+
 
 const Home = () => {
     return (
         <div>
             <Hero></Hero>
 
-            <GridSeciton></GridSeciton>
+            <div className='mt-10'>
+                <BloodStats></BloodStats>
+            </div>
+            
+            <GridSection></GridSection>
             <Contact></Contact>
         </div>
 

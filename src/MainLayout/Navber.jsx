@@ -49,7 +49,7 @@ const Navber = () => {
                 <NavLink to="/foundingpage">Founding</NavLink>
             </li>
             <li>
-                <NavLink to="/about">About us</NavLink>
+                <NavLink to="/aboutpage">About us</NavLink>
             </li>
         </>
     );
@@ -74,7 +74,7 @@ const Navber = () => {
                             <div className="drawer-side z-60 overflow-hidden w-[80%]">
                                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay">hi</label>
                                 <ul className="menu  relative min-h-full bg-gray-950 text-white w-80 p-4">
-                                    {/* Sidebar content here */}
+                           
                                     {
                                         centerLinks
                                     }

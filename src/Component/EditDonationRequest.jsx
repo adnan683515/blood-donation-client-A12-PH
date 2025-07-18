@@ -78,7 +78,7 @@ const EditDonationRequest = () => {
             data.requesterName = requesterName
         data.status = status
         data.finalZila= selectedZila ? selectedZila : finalZila
-        console.log('Submitted Updated Form Data:', data);
+   
 
         const result = await axiosSequre.put('/donationRequestUpdate', data)
 

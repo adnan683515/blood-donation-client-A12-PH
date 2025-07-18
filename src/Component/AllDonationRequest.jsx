@@ -9,7 +9,7 @@ import DisplayDonationRequest from './displayDonationRequest';
 const AllDonationRequest = () => {
     const axiosSequere = AxiosSecure()
 
-    const { data: allRequest = [], isLoading  } = useQuery({
+    const { data: allRequest = [], isLoading } = useQuery({
         queryKey: 'alldonationRequest',
         queryFn: (async () => {
             const result = await axiosSequere.get('/loadDontaionRequest?all=data')
@@ -48,6 +48,21 @@ const AllDonationRequest = () => {
                     }
                 </div>
             }
+
+            <div className="my-16 bg-gray-950 text-gray-100 p-6 rounded-xl shadow-lg">
+                <h3 className="text-2xl text-center font-bold text-red-600 mb-4  ">
+                    Why Your Donation Matters ❤️
+                </h3>
+                <p className="text-gray-300 leading-relaxed text-lg">
+                    Every blood donation goes beyond the needle—it brings hope, extends lives, and unites communities.
+                    By answering these requests, you’re not just giving blood — you’re giving someone another birthday, another memory, another chance.
+                </p>
+                <p className="mt-4 text-gray-400 text-base">
+                    Be the reason someone survives today. Check the requests above and see where you can help.
+                    Your one bag of blood can save up to three lives.
+                </p>
+            </div>
+
         </div>
     );
 };
