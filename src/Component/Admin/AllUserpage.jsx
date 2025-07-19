@@ -89,7 +89,7 @@ const AllUserpage = () => {
     return (
         <Box sx={{ p: 3 }}>
 
-            <Box className="mb-6 bg-gradient-to-r from-red-100 to-white p-6 rounded-2xl shadow-md border border-red-200">
+            <Box className="mb-6 bg-gradient-to-r from-red-100 to-white p-6 rounded-2xl  border border-red-200">
                 <Typography variant="h4" fontWeight="bold" color="red" gutterBottom>
                     👥 Manage All Users
                 </Typography>
@@ -147,7 +147,7 @@ const AllUserpage = () => {
                                     </TableCell>
                                     <TableCell>
                                         <Box className="flex flex-col sm:flex-row justify-center items-center gap-2 flex-wrap">
-                                            {/* Status Toggle Button */}
+                                        
                                             <Button
                                                 size="small"
                                                 variant="contained"
@@ -166,7 +166,7 @@ const AllUserpage = () => {
                                                 {user.status === 'Active' ? 'Block' : 'Activate'}
                                             </Button>
 
-                                            {/* Role Change Buttons */}
+                                        
                                             {user.role !== 'Volunteer' && (
                                                 <Button
                                                     size="small"
@@ -192,10 +192,10 @@ const AllUserpage = () => {
                                                         width: 130,
                                                         textTransform: 'none',
                                                         fontWeight: 500,
-                                                        background: 'linear-gradient(to right, #e11d48, #dc2626)', // rose-600 → red-600
+                                                        background: 'linear-gradient(to right, #e11d48, #dc2626)', 
                                                         color: 'white',
                                                         '&:hover': {
-                                                            background: 'linear-gradient(to right, #be123c, #b91c1c)', // hover darker shades
+                                                            background: 'linear-gradient(to right, #be123c, #b91c1c)', 
                                                         },
                                                     }}
                                                     onClick={() => handleRoleChange('userRoleupdate', user._id, 'Donor')}
@@ -234,7 +234,6 @@ const AllUserpage = () => {
                     </TableBody>
                 </Table>
 
-                {/* 📄 Pagination */}
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 15]}
                     component="div"

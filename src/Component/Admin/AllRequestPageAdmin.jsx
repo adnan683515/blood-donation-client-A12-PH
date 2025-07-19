@@ -85,8 +85,8 @@ const AllRequestPageAdmin = () => {
 
     return (
         <div className="px-4 py-10">
-            {/* Header Section */}
-            <div className="mb-8 bg-gradient-to-r from-red-100 to-red-200 p-6 rounded-2xl shadow-lg">
+         
+            <div className="mb-8 bg-gradient-to-r from-red-100 to-red-200 p-6 rounded-2xl ">
                 <h1 className="text-3xl font-bold text-red-600 flex items-center gap-2">
                     📋 All Donation Requests
                     <span className="text-white bg-red-600 px-3 py-1 rounded-full text-base font-semibold">
@@ -98,7 +98,7 @@ const AllRequestPageAdmin = () => {
                 </p>
             </div>
 
-            {/* ✅ Filtering Section */}
+
             <div className="mb-8 flex flex-wrap gap-3 items-center justify-start">
                 <button
                     onClick={() => setFilterStatus('All')}
@@ -114,7 +114,7 @@ const AllRequestPageAdmin = () => {
                 </button>
                 <button
                     onClick={() => setFilterStatus('inprogress')}
-                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'Inprogress' ? 'bg-blue-500 text-white' : 'border-blue-400 text-blue-700 hover:bg-blue-100'} transition`}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold border ${filterStatus === 'inprogress' ? 'bg-blue-500 text-white' : 'border-blue-400 text-blue-700 hover:bg-blue-100'} transition`}
                 >
                     🔄 In Progress
                 </button>
@@ -132,18 +132,12 @@ const AllRequestPageAdmin = () => {
                 </button>
             </div>
 
-            {/* Optional: Admin Info */}
-            {role === 'Admin' && (
-                <div className="mb-10 bg-white rounded-2xl p-6 shadow-md border border-dashed border-red-200">
-                    <p className="text-sm text-gray-600">
-                        <span className="font-semibold text-gray-800">Admin Panel:</span> You have full control over donation requests. You can edit, delete, or mark them as done/cancelled.
-                    </p>
-                </div>
-            )}
+         
+           
 
             {/* Request Table */}
             {Array.isArray(filteredList) && filteredList.length > 0 ? (
-                <div className='bg-white shadow-xl rounded-2xl overflow-hidden'>
+                <div className='bg-white rounded-2xl overflow-hidden'>
                     <DeshBoardTabulaerView role={role} handleStatus={handleStatus} DonationRequest={filteredList} />
                 </div>
             ) : (

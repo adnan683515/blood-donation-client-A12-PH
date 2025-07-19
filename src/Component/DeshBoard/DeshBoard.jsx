@@ -52,14 +52,17 @@ const DashboardLayout = () => {
                 </div>
 
                 {/* Sidebar Menu */}
-                <div className="drawer-side">
+                <div className="drawer-side  z-600">
                     <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-                    <ul className="menu space-y-2 p-4 w-64 min-h-full bg-gradient-to-b from-gray-950 to-gray-800 text-white">
+                    <ul className="menu space-y-2 p-4 w-64 min-h-full bg-red-50 text-black">
 
                         {/* Sidebar header / Title */}
                         <li className="flex items-center gap-3 mb-6 px-3 py-2 border-b border-gray-700 select-none">
 
-                            <span className="text-xl font-bold">Blood Donation</span>
+                            <span className="text-xl font-bold">
+                                <span className="text-red-600">B</span>lood
+                                <span className="text-red-600 ml-1">B</span>ank
+                            </span>
                         </li>
 
                         <li>

@@ -31,7 +31,7 @@ const MainLayout = () => {
     return (
         <div >
             <Navber></Navber>
-            <Marquee className='pt-1 bg-red-100 text-[var(--primary-color)]'>
+            <Marquee className='pt-1 text-[var(--primary-color)]'>
                 "রক্ত দিন, জীবন বাঁচান — আপনার এক ফোঁটা রক্ত কারো পুরো পৃথিবী হতে পারে। আজই নিবন্ধন করুন রক্তদাতা হিসেবে!"
             </Marquee>
 
