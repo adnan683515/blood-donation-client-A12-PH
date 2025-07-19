@@ -117,7 +117,7 @@ const Welcome = () => {
 
             {(role === 'Admin' || role === 'Volunteer') && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
-                    {/* Total Donors */}
+         
                     <div className="rounded-2xl bg-[#FFE4E4] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-xl font-semibold text-gray-700">Total Donors</h3>
@@ -128,7 +128,6 @@ const Welcome = () => {
 
                         <div className="flex justify-between items-center">
                             <p className="text-4xl font-extrabold text-rose-600">{countDonors ?? 0}</p>
-
                             <div>
                                 <div className="flex items-center flex-wrap">
                                     {storeImageBox?.length > 0 &&
@@ -142,7 +141,7 @@ const Welcome = () => {
                                             />
                                         ))}
 
-                                    {storeImageBox?.length > 6 && (
+                                    {storeImageBox?.length > 5 && (
                                         <Link
                                             to="/deshboard/all-users"
                                             className="w-10 h-10 -ml-3 rounded-full bg-white border-2 border-dashed border-red-400 text-red-500 flex items-center justify-center text-xl font-bold hover:bg-red-100 transition-all duration-200"
@@ -158,7 +157,7 @@ const Welcome = () => {
                         </div>
                     </div>
 
-                    {/* Volunteers */}
+                 
                     <div className="rounded-2xl bg-[#D4F4DB] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-xl font-semibold text-gray-700">Volunteers</h3>
