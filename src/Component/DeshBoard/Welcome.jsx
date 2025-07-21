@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthHook from '../Share/Hooks/AuthHook';
 import DeshBoardTabulaerView from './DeshBoardTabulaerView';
 import { useQuery } from '@tanstack/react-query';
 import AxiosSecure from '../../Axios/AxiosSequere';
-import { Bars } from 'react-loader-spinner';
+import { Bars, DNA } from 'react-loader-spinner';
 import RoleHook from '../Share/Hooks/RoleHook';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
@@ -14,7 +14,7 @@ const Welcome = () => {
     const { user, loading } = AuthHook();
     const axiosSecure = AxiosSecure();
     const [role, roleLoading] = RoleHook();
-
+    const [normalLoading, serNormalLoading] = useState(true)
     const [countDonors, setCountDonors] = useState(null);
     const [countVolunteer, setCountVolunteer] = useState(null);
     const [totalUser, setTotalUser] = useState(null);
@@ -32,7 +32,7 @@ const Welcome = () => {
         },
     });
 
-    const { data: donationData = [], refetch } = useQuery({
+    const { data: donationData = [], refetch, isLoading: donationDataLoaidng } = useQuery({
         queryKey: ['donationRequest', user?.email],
         enabled: !loading && !roleLoading && role !== 'Admin',
         queryFn: async () => {
@@ -58,12 +58,24 @@ const Welcome = () => {
         },
     });
 
+    useEffect(() => {
+        serNormalLoading(false)
+    }, [])
 
-    const isInitialLoading = loading || roleLoading || !role || isLoading || allDataLoading;
-    if (isInitialLoading) {
+
+
+    const isInitialLoading = loading || roleLoading || !role || isLoading || allDataLoading || normalLoading || donationDataLoaidng;
+    if (storeImageVolunteerBox?.length < 1 || storeImageBox?.length < 1 || isInitialLoading) {
         return (
             <div className="min-h-screen flex justify-center items-center">
-                <Bars height="50" width="50" color="#e11d48" ariaLabel="bars-loading" visible={true} />
+                <DNA
+                    visible={true}
+                    height="80"
+                    width="80"
+                    ariaLabel="dna-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="dna-wrapper"
+                />
             </div>
         );
     }
@@ -117,7 +129,7 @@ const Welcome = () => {
 
             {(role === 'Admin' || role === 'Volunteer') && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
-         
+
                     <div className="rounded-2xl bg-[#FFE4E4] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-xl font-semibold text-gray-700">Total Donors</h3>
@@ -157,7 +169,7 @@ const Welcome = () => {
                         </div>
                     </div>
 
-                 
+
                     <div className="rounded-2xl bg-[#D4F4DB] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-xl font-semibold text-gray-700">Volunteers</h3>
@@ -196,7 +208,7 @@ const Welcome = () => {
                     </div>
 
 
-                    {/* Total Users */}
+
                     <div className="rounded-2xl bg-gradient-to-r from-[#ADE1BB]
                     to-[#CDFFC5] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between">
                         <div className="flex justify-between items-start mb-4">
@@ -240,7 +252,7 @@ const Welcome = () => {
 
 
 
-                    {/* Requests */}
+
                     <div className="rounded-2xl bg-gradient-to-r from-[#ADC2E1] to-[#C5DCFF] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between">
                         <div className="flex justify-between items-start mb-4">
                             <h3 className="text-xl font-semibold text-[#5483CA]">Requests</h3>
@@ -273,7 +285,7 @@ const Welcome = () => {
                     </div>
 
 
-                    {/* Fund */}
+
                     <div className="rounded-2xl bg-gradient-to-br from-[#D6EBFF] to-[#f0faff] p-6 hover:scale-[1.03] transition-all duration-300 flex flex-col justify-between ">
                         <div className="flex justify-between items-start mb-5">
                             <h3 className="text-xl font-semibold text-gray-800">Fund</h3>
@@ -296,7 +308,7 @@ const Welcome = () => {
             {role !== 'Admin' && donationData.length > 0 && (
                 <div>
                     <div className="mt-12 rounded-3xl overflow-hidden bg-white">
-                        <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={donationData} />
+                        <DeshBoardTabulaerView role={role} handleStatus={handleStatus} DonationRequest={donationData} />
                     </div>
                     <div className="flex justify-end mt-3 items-center">
                         <Link to={'/deshboard/my-donation-requests'} className="bg-gradient-to-r px-3 py-2 rounded-sm from-rose-600 to-red-600 text-white flex items-center gap-2">

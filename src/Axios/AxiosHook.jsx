@@ -9,5 +9,4 @@ const instance = axios.create({
 const AxiosHook = () => {
     return instance;
 };
-
 export default AxiosHook;

@@ -20,7 +20,7 @@ const AllDonationRequest = () => {
     return (
         <div className='w-[98%] mx-auto'>
 
-            <div className="text-center sm:text-start  rounded-lg p-6  mx-auto my-8 shadow-lg">
+            <div className="text-center sm:text-start  rounded-lg p-6  mx-auto my-8 ">
                 <h2 className="text-2xl font-extrabold text-red-600 mb-2 ">
                     Urgent Blood Donation Requests – Help Save a Life
                 </h2>
@@ -49,7 +49,7 @@ const AllDonationRequest = () => {
                 </div>
             }
 
-            <div className="my-16 bg-gray-950 text-gray-100 p-6 rounded-xl shadow-lg">
+            <div className="my-16 bg-gray-950 text-gray-100 p-6 rounded-xl ">
                 <h3 className="text-2xl text-center font-bold text-red-600 mb-4  ">
                     Why Your Donation Matters ❤️
                 </h3>

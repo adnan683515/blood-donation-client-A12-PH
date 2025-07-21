@@ -51,18 +51,21 @@ const Navber = () => {
             <li>
                 <NavLink to="/aboutpage">About us</NavLink>
             </li>
+            <li className='block md:hidden'>
+                <NavLink to="/">Back To Home</NavLink>
+            </li>
         </>
     );
 
     return (
         <>
-            <div className="navbar  bg-gray-950 sm:px-4 text-white ">
+            <div className="navbar  fixed z-40 bg-gray-950 sm:px-4 text-white ">
                 <div className="navbar-start">
                     <div className="">
                         <div className="drawer lg:hidden block ">
                             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
                             <div className="drawer-content ">
-                                {/* Page content here */}
+                        
                                 <label htmlFor="my-drawer" className="  ">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
@@ -74,11 +77,11 @@ const Navber = () => {
                             <div className="drawer-side z-60 overflow-hidden w-[80%]">
                                 <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay">hi</label>
                                 <ul className="menu  relative min-h-full bg-gray-950 text-white w-80 p-4">
-                           
+
                                     {
                                         centerLinks
                                     }
-                                    <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay absolute  right-15">
+                                    <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay absolute right-20">
                                         <FaArrowLeft style={{ color: 'white' }} size={20} />
                                     </label>
                                 </ul>
@@ -142,7 +145,7 @@ const Navber = () => {
                                         },
                                     }}
                                 >
-                                    
+
                                     <MenuItem
                                         component={Link}
                                         to="/deshboard"

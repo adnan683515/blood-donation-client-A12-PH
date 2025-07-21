@@ -68,7 +68,7 @@ const SearchDoner = () => {
     }, [selectedDsicts, allDisticts]);
 
     return (
-        <div>
+        <div className=' pb-20'>
 
             <div
                 className="bg-cover bg-center bg-no-repeat py-16 px-4"

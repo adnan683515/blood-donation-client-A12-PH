@@ -34,6 +34,7 @@ function Row({ row, handleStatus, role }) {
         },
         enabled: !!row?._id,
     });
+    console.log(role)
 
 
     return (
@@ -73,18 +74,17 @@ function Row({ row, handleStatus, role }) {
                 <TableCell>
                     <div className="flex gap-2 justify-center">
                         {
-                            (role === 'Donor') && (
-                                <Link to={`/deshboard/UpdateDonationRequest/${row?._id}`}>
-                                    <button
-                                        onClick={(e) => handleStatus(e.target, row?._id)}
-                                        className="px-3 py-1 bg-gray-100 text-black rounded-md font-semibold"
-                                    >
-                                        Edit
-                                    </button>
-                                </Link>
-                            )
+                            role === 'Donor' && <Link to={`/deshboard/UpdateDonationRequest/${row?._id}`}>
+                                <button
+                                    onClick={(e) => handleStatus(e.target, row?._id)}
+                                    className="px-3 py-1 bg-gray-100 text-black rounded-md font-semibold"
+                                >
+                                    Edit
+                                </button>
+                            </Link>
                         }
-                    
+
+
                         <button onClick={(e) => handleStatus(e.target, row?._id)} className="px-3 py-1 bg-red-500 text-white rounded-md font-semibold hover:bg-red-600 transition">Delete</button>
                     </div>
                 </TableCell>
@@ -188,9 +188,9 @@ Row.propTypes = {
     role: PropTypes.string
 };
 
-// Main Component
+
 export default function DeshBoardTabulaerView({ DonationRequest = [], handleStatus, role }) {
-    // Ensure DonationRequest is always an array
+
     const safeRows = Array.isArray(DonationRequest) ? DonationRequest : [];
 
 

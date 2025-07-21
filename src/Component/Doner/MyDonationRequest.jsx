@@ -14,6 +14,7 @@ const MyDonationRequest = () => {
     const [role, roleLoading] = RoleHook()
     const [statusFilter, setStatusFilter] = useState("all");
 
+
     const { data: DonationRequest = [], isLoading, refetch } = useQuery({
         queryKey: ['mydonationRequest', user?.email],
         enabled: !!user && !loading,
@@ -114,9 +115,8 @@ const MyDonationRequest = () => {
                 </select>
             </div>
 
-            {/* Table */}
             <div>
-                <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={filteredRequest} />
+                <DeshBoardTabulaerView handleStatus={handleStatus} DonationRequest={filteredRequest} role={role} />
             </div>
         </div>
     );

@@ -1,19 +1,14 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import AuthHook from '../../Component/Share/Hooks/AuthHook';
 
+
 const Hero = () => {
-
-
-    const { user } = AuthHook()
-
-
 
 
     return (
         <div>
             <div className="relative h-[80vh]">
-                {/* Background Image */}
                 <div className="absolute inset-0">
                     <img
                         src="https://i.ibb.co/Q3dj13QK/Black-and-Red-Minimalist-Halloween-Desktop-Wallpaper-1.png"
@@ -22,27 +17,29 @@ const Hero = () => {
                     />
                 </div>
 
-                {/* Content */}
-                <div className="absolute inset-0 flex items-center justify-center px-4">
-                    <div className="text-center text-white max-w-xl space-y-2 sm:space-y-6">
-                        <h1 className="text-4xl md:text-5xl font-bold text-rose-500">Welcome to Our Site</h1>
-                        <p className="text-lg md:text-xl">
-                            Discover stories, request donations, and help make a difference.
+        
+                <div   className="absolute inset-0 flex items-center justify-center px-4">
+                    <div  data-aos="zoom-in-up"  className="max-w-3xl text-center">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-rose-600 mb-4">
+                            Life-Saving Blood, Just a Click Away
+                        </h2>
+                        <p className="text-white text-base sm:text-lg mb-6">
+                            Connect with donors, respond to emergencies, and stay updated with your donation journey — all in one place.
                         </p>
-                        <p className="text-base md:text-lg text-gray-200">
-                            Join a growing community of changemakers. Whether you're here to lend a helping hand or need support,
-                            you're in the right place. Every small act of kindness counts.
-                        </p>
-
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-                            <Link to={`${user ? '/searchdonor' : '/signup'}`} className="bg-gradient-to-r from-rose-500 to-red-600 w-[50%] text-white px-5 py-2 rounded">
+                        <Link to={'/searchdonor'}>
+                            <button className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-md font-semibold transition-all">
                                 Search Donors
-                            </Link>
-                        </div>
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
+
+
     );
 };
 

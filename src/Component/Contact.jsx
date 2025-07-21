@@ -4,7 +4,7 @@ const Contact = () => {
     return (
         <div className=" w-[98%] mx-auto bg-gray-100  text-black py-16 px-4">
             <div className="  flex flex-col md:flex-row items-center justify-between gap-10">
-                {/* Left Side - Contact Info */}
+
                 <div className="md:w-1/2 space-y-4">
                     <h2 className="text-3xl md:text-4xl font-bold text-red-600">Get in Touch</h2>
                     <p className="text-lg ">
@@ -16,10 +16,10 @@ const Contact = () => {
                     </p>
                 </div>
 
-                {/* Right Side - Form */}
-                <div className="md:w-1/2 w-full bg-white p-6 rounded-lg shadow-lg text-black">
+
+                <div className="md:w-1/2 w-full bg-white p-6 rounded-lg  text-black">
                     <form className="space-y-4">
-                        {/* Email */}
+
                         <div>
                             <label className="block text-sm font-medium mb-1 text-red-600">Email</label>
                             <input
@@ -30,7 +30,7 @@ const Contact = () => {
                             />
                         </div>
 
-                        {/* Contact Number */}
+
                         <div>
                             <label className="block text-sm font-medium mb-1 text-red-600">Contact Number</label>
                             <input
@@ -41,7 +41,7 @@ const Contact = () => {
                             />
                         </div>
 
-                        {/* Description */}
+
                         <div>
                             <label className="block text-sm font-medium mb-1 text-red-600">Description</label>
                             <textarea
@@ -52,7 +52,7 @@ const Contact = () => {
                             ></textarea>
                         </div>
 
-                        {/* Submit Button */}
+
                         <div>
                             <button
                                 type="submit"
