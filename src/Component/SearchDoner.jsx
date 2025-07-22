@@ -6,11 +6,12 @@ import AxiosSecure from '../Axios/AxiosSequere';
 import { Bars } from 'react-loader-spinner';
 import SearchDonerDisplay from './SearchDonerDisplay';
 import AuthHook from './Share/Hooks/AuthHook';
+import AxiosHook from '../Axios/AxiosHook';
 
 const SearchDoner = () => {
     const [district, setDistrict] = useState(null);
     const [upzila, setUpzilaData] = useState([]);
-    const axiosSequre = AxiosSecure();
+    const axiosSequre = AxiosHook();
     const [doners, setDoners] = useState([]);
     const [loader, setLoader] = useState(false);
     const [search, setSearch] = useState(false);
@@ -29,7 +30,7 @@ const SearchDoner = () => {
         setLoader(true);
         setSearch(true);
         const { blood, upazila } = data;
-        const searchInfo = { blood, upazila, district, role: 'Donor', email: user?.email };
+        const searchInfo = { blood, upazila, district, role: 'Donor'};
         const queryString = new URLSearchParams(searchInfo).toString();
 
         try {
@@ -75,10 +76,10 @@ const SearchDoner = () => {
     }
 
     return (
-        <div className=' pb-20'>
+        <div className='pb-20 '>
 
             <div
-                className="bg-cover bg-center bg-no-repeat py-16 px-4"
+                className="bg-cover bg-center bg-no-repeat py-20 px-4"
                 style={{
                     backgroundImage: `url('https://i.ibb.co/xtsJMSBn/Black-Orange-Simple-Open-Donation-Banner.png')`,
                 }}

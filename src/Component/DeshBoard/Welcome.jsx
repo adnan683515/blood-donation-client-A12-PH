@@ -153,7 +153,7 @@ const Welcome = () => {
                                             />
                                         ))}
 
-                                    {storeImageBox?.length > 5 && (
+                                    {storeImageBox?.length > 5 && role === 'Admin' && (
                                         <Link
                                             to="/deshboard/all-users"
                                             className="w-10 h-10 -ml-3 rounded-full bg-white border-2 border-dashed border-red-400 text-red-500 flex items-center justify-center text-xl font-bold hover:bg-red-100 transition-all duration-200"
@@ -193,9 +193,9 @@ const Welcome = () => {
                                         />
                                     ))}
 
-                                {storeImageVolunteerBox?.length > 6 && (
+                                {storeImageVolunteerBox?.length > 6 && role === 'Admin' && (
                                     <Link
-                                        to="/dashboard/volunteers"
+                                        to="/deshboard/all-users"
                                         className="w-10 h-10 -ml-3 rounded-full bg-white border-2 border-dashed border-green-400 text-green-600 flex items-center justify-center text-xl font-bold hover:bg-green-100 transition-all duration-200"
                                         title="View all volunteers"
                                         style={{ zIndex: 0 }}

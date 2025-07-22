@@ -47,9 +47,8 @@ export const router = createBrowserRouter([
                 Component: SignUP
             }, {
                 path: "/searchdonor",
-                element: <PrivetRouter>
-                    <SearchDoner></SearchDoner>
-                </PrivetRouter>
+                element: <SearchDoner></SearchDoner>
+
             }, {
                 path: '/donation-requests',
                 Component: AllDonationRequest
