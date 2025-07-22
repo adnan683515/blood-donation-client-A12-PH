@@ -73,7 +73,7 @@ const Home = () => {
             <div data-aos="zoom-in-up" className='sm:w-[98%] mx-auto'>
                 <div className='py-4'>
                     <div className="flex flex-row justify-between items-center px-4">
-                        <h2 className="text-xl sm:text-3xl font-extrabold text-black">
+                        <h2 className="text-xl w-[80%] sm:text-3xl font-extrabold text-black">
                             Our Respective{' '}
                             <span className="text-rose-600">
                                 Donors
@@ -81,10 +81,13 @@ const Home = () => {
 
 
                         </h2>
-                        <Link to={'/searchdonor'}>
-                            <button className="mt-4 sm:mt-0 px-4 sm:px-6 py-2 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-700 transition">
-                                Find Donors
-                            </button></Link>
+                        <div className="rounded-sm hover:bg-rose-700 bg-rose-600 sm:h-[5vh] flex items-center justify-center px-3">
+                            <Link className="w-full sm:w-auto" to={'/searchdonor'}>
+                                <button className="w-full sm:w-auto px-4 py-2  text-white rounded-lg font-semibold  transition duration-300 text-sm sm:text-base">
+                                    Donors
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <DonorsPublicPage></DonorsPublicPage>
