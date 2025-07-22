@@ -5,7 +5,7 @@ import AuthHook from '../../Component/Share/Hooks/AuthHook';
 
 const Hero = () => {
 
-
+ const {user} = AuthHook()
     return (
         <div>
             <div className="relative h-[80vh]">
@@ -26,7 +26,7 @@ const Hero = () => {
                         <p className="text-white text-base sm:text-lg mb-6">
                             Connect with donors, respond to emergencies, and stay updated with your donation journey — all in one place.
                         </p>
-                        <Link to={'/searchdonor'}>
+                        <Link to={user ? '/searchdonor' : '/login'}>
                             <button className="bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-md font-semibold transition-all">
                                 Search Donors
                             </button>

@@ -47,7 +47,9 @@ export const router = createBrowserRouter([
                 Component: SignUP
             }, {
                 path: "/searchdonor",
-                Component: SearchDoner
+                element: <PrivetRouter>
+                    <SearchDoner></SearchDoner>
+                </PrivetRouter>
             }, {
                 path: '/donation-requests',
                 Component: AllDonationRequest
@@ -63,18 +65,18 @@ export const router = createBrowserRouter([
             }, {
                 path: '/Blogpage',
                 Component: Blog
-            },{
-                path:'/foundingpage',
-                element : <PrivetRouter>
+            }, {
+                path: '/foundingpage',
+                element: <PrivetRouter>
                     <Founding></Founding>
                 </PrivetRouter>
             },
             {
-                path:"/details/:id",
-                Component : BlogDetails
-            },{
-                path:'/aboutpage',
-                Component : About
+                path: "/details/:id",
+                Component: BlogDetails
+            }, {
+                path: '/aboutpage',
+                Component: About
             }
         ]
     },
@@ -114,9 +116,9 @@ export const router = createBrowserRouter([
                 element: <AdminAndVolunTeer>
                     <ContentManagMent></ContentManagMent>
                 </AdminAndVolunTeer>
-            },{
-                path:'/deshboard/UpdateDonationRequest/:id',
-                element : <DonorPrivetRouter>
+            }, {
+                path: '/deshboard/UpdateDonationRequest/:id',
+                element: <DonorPrivetRouter>
                     <EditDonationRequest></EditDonationRequest>
                 </DonorPrivetRouter>
             }

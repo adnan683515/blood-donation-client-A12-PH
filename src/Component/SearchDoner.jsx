@@ -14,7 +14,7 @@ const SearchDoner = () => {
     const [doners, setDoners] = useState([]);
     const [loader, setLoader] = useState(false);
     const [search, setSearch] = useState(false);
-    const { user } = AuthHook()
+    const { user, loading } = AuthHook()
 
     const {
         register,
@@ -23,12 +23,15 @@ const SearchDoner = () => {
         formState: { errors },
     } = useForm();
 
+
     const onSubmit = async (data) => {
+
         setLoader(true);
         setSearch(true);
         const { blood, upazila } = data;
         const searchInfo = { blood, upazila, district, role: 'Donor', email: user?.email };
         const queryString = new URLSearchParams(searchInfo).toString();
+
         try {
             const result = await axiosSequre.get(`/donor?${queryString}`);
             setDoners(result?.data || []);
@@ -67,6 +70,10 @@ const SearchDoner = () => {
         }
     }, [selectedDsicts, allDisticts]);
 
+    if (loading) {
+        return <div>hello boss</div>
+    }
+
     return (
         <div className=' pb-20'>
 
@@ -86,7 +93,7 @@ const SearchDoner = () => {
                             onSubmit={handleSubmit(onSubmit)}
                             className="sm:space-y-4 flex flex-wrap gap-2 sm:gap-4"
                         >
-                            {/* Blood Group */}
+
                             <div className="flex-1 min-w-[150px]">
                                 <label className="block mb-1 text-white">Blood Group</label>
                                 <select
@@ -108,7 +115,7 @@ const SearchDoner = () => {
                                 )}
                             </div>
 
-                            {/* Zila */}
+
                             <div className="flex-1 min-w-[150px]">
                                 <label className="block mb-1 text-white">Zila</label>
                                 <select
@@ -127,7 +134,7 @@ const SearchDoner = () => {
                                 )}
                             </div>
 
-                            {/* Upazila */}
+
                             <div className="flex-1 min-w-[150px]">
                                 <label className="block mb-1 text-white">Upazila</label>
                                 <select
@@ -146,7 +153,7 @@ const SearchDoner = () => {
                                 )}
                             </div>
 
-                            {/* Submit Button */}
+
                             <div className="w-full mt-2 flex justify-center">
                                 <button
                                     type="submit"
