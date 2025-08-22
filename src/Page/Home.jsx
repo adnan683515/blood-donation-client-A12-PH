@@ -7,6 +7,8 @@ import { Link } from 'react-router';
 import { OurSomeSection } from './HomeFeatures/OurSomeSection';
 import DonorsPublicPage from './HomeFeatures/DonorsPublicPage';
 import Vedio from './HomeFeatures/Vedio';
+import SplitSection from '../Axtracomponent/SplitSection';
+
 
 
 
@@ -105,9 +107,11 @@ const Home = () => {
             </div>
 
 
-
+            <SplitSection></SplitSection>
 
             <Contact></Contact>
+
+
         </div>
 
     );
