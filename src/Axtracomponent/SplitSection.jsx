@@ -68,7 +68,7 @@ export default function SplitSection() {
                         <div className="flex items-center gap-3">
                             <Link to={`${user ? '/donation-requests' : '/login'}`}>
                             <button className="rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm bg-rose-600 text-white hover:opacity-90">
-                                Become a Donor
+                                Become a Dono
                             </button></Link>
                             <Link to={'/aboutpage'}>
                                 <button className="rounded-2xl px-5 py-3 text-sm font-semibold shadow-sm border hover:bg-gray-50">
